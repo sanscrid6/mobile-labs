@@ -9,11 +9,13 @@
 import React from 'react';
 import type {Node} from 'react';
 import {
+  Dimensions,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableHighlight,
   useColorScheme,
   View,
 } from 'react-native';
@@ -25,6 +27,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Converter from './screens/converter';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -62,7 +65,7 @@ const App: () => Node = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    /*<SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
@@ -91,7 +94,8 @@ const App: () => Node = () => {
           <LearnMoreLinks />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView>*/
+    <Converter />
   );
 };
 
