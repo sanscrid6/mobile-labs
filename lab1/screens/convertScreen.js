@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Key from '../components/Key';
 import DropDown from '../components/DropDown';
-import copyIcon from '../public/content-copy.png';
 import Copy from '../components/Copy';
+import {useOrientation} from '../hooks/useOrientation';
+import {Image} from 'native-base';
 
 const ACTIONS = {
   ADD: 'ADD',
@@ -69,6 +70,21 @@ function ConvertScreen() {
     setConverted(convert(originalMeasure, convertedMeasure, originalVal));
   }, [convertedMeasure, original, originalMeasure]);
 
+  useEffect(() => {
+    setOriginalMeasure(unit.measurements[0]);
+    setConvertedMeasure(unit.measurements[1]);
+
+    const originalVal = Number(original.join(''));
+
+    if (Number.isNaN(originalVal)) {
+      return;
+    }
+
+    setConverted(
+      convert(unit.measurements[0], unit.measurements[1], originalVal),
+    );
+  }, [unit]);
+
   const handlePress = (num, action) => {
     switch (action) {
       case ACTIONS.ADD:
@@ -93,25 +109,18 @@ function ConvertScreen() {
     }
   };
 
-  useEffect(() => {
-    setOriginalMeasure(unit.measurements[0]);
-    setConvertedMeasure(unit.measurements[1]);
-
-    const originalVal = Number(original.join(''));
-
-    if (Number.isNaN(originalVal)) {
-      return;
-    }
-
-    setConverted(
-      convert(unit.measurements[0], unit.measurements[1], originalVal),
-    );
-  }, [unit]);
-
   const renderOriginal = () => {
     return original[0] === 0 && original[1] !== '.' && original[1] !== undefined
       ? original.slice(1, original.length).join('')
       : original.join('');
+  };
+
+  const swap = () => {
+    const newOriginal = convertedMeasure;
+    const newConverted = originalMeasure;
+
+    setOriginalMeasure(newOriginal);
+    setConvertedMeasure(newConverted);
   };
 
   return (
@@ -119,7 +128,7 @@ function ConvertScreen() {
       style={{
         display: 'flex',
         flexGrow: 1,
-        flexDirection: 'column', // inner items will be added vertically
+        flexDirection: 'column',
         justifyContent: 'space-between',
         margin: 10,
       }}>
@@ -148,6 +157,24 @@ function ConvertScreen() {
             }
             placeholder={'original measure'}
           />
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity onPress={swap}>
+              <Image
+                source={require('../public/swap-horizontal.png')}
+                style={{
+                  tintColor: 'black',
+                  width: 20,
+                  height: 20,
+                }}
+                alt={'swap'}
+              />
+            </TouchableOpacity>
+          </View>
           <DropDown
             items={unit.measurements.map(m => {
               return {value: m.name, label: m.name};
@@ -160,6 +187,8 @@ function ConvertScreen() {
           />
         </View>
       </View>
+
+
 
       <View
         style={{

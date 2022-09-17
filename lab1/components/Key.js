@@ -1,7 +1,10 @@
 import React from 'react';
 import {Text, TouchableHighlight, View} from 'react-native';
+import {useOrientation} from '../hooks/useOrientation';
 
 function Key({text, onPress}) {
+  const orientation = useOrientation();
+
   return (
     <TouchableHighlight
       onPress={onPress}
@@ -12,7 +15,7 @@ function Key({text, onPress}) {
         height: 80,
         backgroundColor: '#000000',
         borderRadius: 55,
-        margin: 5,
+        margin: orientation === 'PORTRAIT' ? 5 : 8,
       }}>
       <Text
         style={{
