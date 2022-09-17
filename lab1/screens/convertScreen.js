@@ -13,17 +13,37 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const units = [
   {
     name: 'weight',
-    measurements: ['kg', 'g', 'mg'],
+    measurements: [
+      {name: 'kg', toCommon: 1},
+      {name: 'g', toCommon: 0.001},
+      {name: 'mg', toCommon: 0.000001},
+    ],
+    common: 'kg',
   },
   {
     name: 'distance',
-    measurements: ['km', 'm', 'sm'],
+    measurements: [
+      {name: 'km', toCommon: 1000},
+      {name: 'm', toCommon: 1},
+      {name: 'sm', toCommon: 0.001},
+    ],
+    common: 'm',
   },
   {
     name: 'information',
-    measurements: ['mb', 'kb', 'gb'],
+    measurements: [
+      {name: 'mb', toCommon: 1},
+      {name: 'kb', toCommon: 0.001},
+      {name: 'gb', toCommon: 1000},
+    ],
+    common: 'mb',
   },
 ];
+
+const convert = (originalMeasure, convertedMeasure, originalVal) => {
+  const commonUnit = originalMeasure.toCommon * originalVal;
+  return commonUnit / convertedMeasure.toCommon;
+};
 
 function ConvertScreen() {
   const [converted, setConverted] = useState(0);
@@ -36,6 +56,16 @@ function ConvertScreen() {
   const [convertedMeasure, setConvertedMeasure] = useState(
     units[0].measurements[1],
   );
+
+  useEffect(() => {
+    const originalVal = Number(original.join(''));
+
+    if (Number.isNaN(originalVal)) {
+      return;
+    }
+
+    setConverted(convert(originalMeasure, convertedMeasure, originalVal));
+  }, [convertedMeasure, original, originalMeasure]);
 
   const handlePress = (num, action) => {
     switch (action) {
@@ -64,6 +94,16 @@ function ConvertScreen() {
   useEffect(() => {
     setOriginalMeasure(unit.measurements[0]);
     setConvertedMeasure(unit.measurements[1]);
+
+    const originalVal = Number(original.join(''));
+
+    if (Number.isNaN(originalVal)) {
+      return;
+    }
+
+    setConverted(
+      convert(unit.measurements[0], unit.measurements[1], originalVal),
+    );
   }, [unit]);
 
   return (
@@ -92,18 +132,22 @@ function ConvertScreen() {
           }}>
           <DropDown
             items={unit.measurements.map(m => {
-              return {value: m, label: m};
+              return {value: m.name, label: m.name};
             })}
-            selected={originalMeasure}
-            onValueChanged={setOriginalMeasure}
+            selected={originalMeasure.name}
+            onValueChanged={value =>
+              setOriginalMeasure(unit.measurements.find(m => m.name === value))
+            }
             placeholder={'original measure'}
           />
           <DropDown
             items={unit.measurements.map(m => {
-              return {value: m, label: m};
+              return {value: m.name, label: m.name};
             })}
-            selected={convertedMeasure}
-            onValueChanged={setConvertedMeasure}
+            selected={convertedMeasure.name}
+            onValueChanged={value =>
+              setConvertedMeasure(unit.measurements.find(m => m.name === value))
+            }
             placeholder={'converted measure'}
           />
         </View>
@@ -119,7 +163,7 @@ function ConvertScreen() {
       </View>
 
       <View>
-        <Text> Converted: {converted}</Text>
+        <Text> Converted: {converted.toFixed(4)}</Text>
       </View>
 
       <View
