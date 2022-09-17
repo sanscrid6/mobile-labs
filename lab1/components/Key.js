@@ -8,10 +8,11 @@ function Key({text, onPress}) {
       style={{
         rowGap: 30,
         columnGap: 30,
-        flexBasis: 110,
-        height: 110,
+        flexBasis: 80,
+        height: 80,
         backgroundColor: '#000000',
         borderRadius: 55,
+        margin: 5,
       }}>
       <Text
         style={{
