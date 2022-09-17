@@ -9,7 +9,7 @@ const ACTIONS = {
 
 function Converter() {
   const [converted, setConverted] = useState(0);
-  const [original, setOriginal] = useState([]);
+  const [original, setOriginal] = useState([0]);
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
@@ -21,12 +21,17 @@ function Converter() {
         }
         setOriginal([...original, num]);
         break;
+
       case ACTIONS.REMOVE:
-        if (original.length === 0) {
+        if (original.length === 1 && original[0] === 0) {
           return;
         }
 
         original.splice(original.length - 1, 1);
+
+        if (original.length === 0) {
+          original.push(0);
+        }
         setOriginal([...original]);
         break;
     }
@@ -41,7 +46,16 @@ function Converter() {
         justifyContent: 'space-between',
       }}>
       <View>
-        <Text>Original: {original.length === 0 ? '0' : original.join('')}</Text>
+        <View />
+        <View />
+      </View>
+      <View>
+        <Text>
+          Original:{' '}
+          {original[0] === 0 && original[1] !== '.' && original[1] !== undefined
+            ? original.slice(1, original.length).join('')
+            : original.join('')}
+        </Text>
       </View>
 
       <View>

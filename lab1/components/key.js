@@ -13,21 +13,17 @@ function Key({text, onPress}) {
         backgroundColor: '#000000',
         borderRadius: 55,
       }}>
-      <View
+      <Text
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          height: '100%',
+          width: '100%',
+          textAlign: 'center',
+          textAlignVertical: 'center',
+          color: '#FFFFFF',
+          fontSize: 22,
         }}>
-        <Text
-          style={{
-            textAlignVertical: 'center',
-            textAlign: 'center',
-            color: '#FFFFFF',
-          }}>
-          {text}
-        </Text>
-      </View>
+        {text}
+      </Text>
     </TouchableHighlight>
   );
 }
