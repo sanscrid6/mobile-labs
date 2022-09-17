@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import Key from '../components/Key';
 import DropDown from '../components/DropDown';
+import copyIcon from '../public/content-copy.png';
+import Copy from '../components/Copy';
 
 const ACTIONS = {
   ADD: 'ADD',
@@ -106,6 +108,12 @@ function ConvertScreen() {
     );
   }, [unit]);
 
+  const renderOriginal = () => {
+    return original[0] === 0 && original[1] !== '.' && original[1] !== undefined
+      ? original.slice(1, original.length).join('')
+      : original.join('');
+  };
+
   return (
     <View
       style={{
@@ -153,17 +161,25 @@ function ConvertScreen() {
         </View>
       </View>
 
-      <View>
-        <Text>
-          Original:{' '}
-          {original[0] === 0 && original[1] !== '.' && original[1] !== undefined
-            ? original.slice(1, original.length).join('')
-            : original.join('')}
-        </Text>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <Text>Original: {renderOriginal()}</Text>
+
+        <Copy source={renderOriginal()} />
       </View>
 
-      <View>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
         <Text> Converted: {converted.toFixed(4)}</Text>
+        <Copy source={converted.toFixed(4)} />
       </View>
 
       <View
