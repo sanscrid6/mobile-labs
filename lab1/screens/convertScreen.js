@@ -3,8 +3,8 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import Key from '../components/Key';
 import DropDown from '../components/DropDown';
 import Copy from '../components/Copy';
-import {useOrientation} from '../hooks/useOrientation';
 import {Image} from 'native-base';
+import Config from 'react-native-config';
 
 const ACTIONS = {
   ADD: 'ADD',
@@ -61,6 +61,8 @@ function ConvertScreen() {
   );
 
   useEffect(() => {
+    console.log(Config['FLAVOR'], 'env');
+
     const originalVal = Number(original.join(''));
 
     if (Number.isNaN(originalVal)) {
@@ -187,8 +189,6 @@ function ConvertScreen() {
           />
         </View>
       </View>
-
-
 
       <View
         style={{
