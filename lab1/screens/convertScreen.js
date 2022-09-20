@@ -166,17 +166,19 @@ function ConvertScreen() {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <TouchableOpacity onPress={swap}>
-              <Image
-                source={require('../public/swap-horizontal.png')}
-                style={{
-                  tintColor: 'black',
-                  width: 20,
-                  height: 20,
-                }}
-                alt={'swap'}
-              />
-            </TouchableOpacity>
+            {BuildConfig.FLAVOR === 'premium' && (
+              <TouchableOpacity onPress={swap}>
+                <Image
+                  source={require('../public/swap-horizontal.png')}
+                  style={{
+                    tintColor: 'black',
+                    width: 20,
+                    height: 20,
+                  }}
+                  alt={'swap'}
+                />
+              </TouchableOpacity>
+            )}
           </View>
           <DropDown
             items={unit.measurements.map(m => {
@@ -198,8 +200,7 @@ function ConvertScreen() {
           justifyContent: 'space-between',
         }}>
         <Text>Original: {renderOriginal()}</Text>
-
-        <Copy source={renderOriginal()} />
+        {BuildConfig.FLAVOR === 'premium' && <Copy source={renderOriginal()} />}
       </View>
 
       <View
@@ -209,7 +210,9 @@ function ConvertScreen() {
           justifyContent: 'space-between',
         }}>
         <Text> Converted: {converted.toFixed(4)}</Text>
-        <Copy source={converted.toFixed(4)} />
+        {BuildConfig.FLAVOR === 'premium' && (
+          <Copy source={converted.toFixed(4)} />
+        )}
       </View>
 
       <View
