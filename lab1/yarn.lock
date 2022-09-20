@@ -6568,6 +6568,11 @@ react-is@^17.0.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-build-config@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-build-config/-/react-native-build-config-0.3.2.tgz#bb5f2eaa13bb2ebe0870875fdb92faec3caeee4e"
+  integrity sha512-yGWzeJNR1m0Cml6grVEnE/5/5dcKvDLmnubJkA/6Tt5P/40JAgrtjwEnC8NifhLIKZ1rEzbL/inIh/m7qkvEtg==
+
 react-native-codegen@^0.70.4:
   version "0.70.4"
   resolved "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.70.4.tgz"

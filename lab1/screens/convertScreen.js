@@ -5,6 +5,7 @@ import DropDown from '../components/DropDown';
 import Copy from '../components/Copy';
 import {Image} from 'native-base';
 import Config from 'react-native-config';
+import BuildConfig from 'react-native-build-config';
 
 const ACTIONS = {
   ADD: 'ADD',
@@ -61,7 +62,7 @@ function ConvertScreen() {
   );
 
   useEffect(() => {
-    console.log(Config['FLAVOR'], 'env');
+    console.log(BuildConfig, 'env');
 
     const originalVal = Number(original.join(''));
 

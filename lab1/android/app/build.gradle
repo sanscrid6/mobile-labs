@@ -142,6 +142,7 @@ android {
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
+
         if (isNewArchitectureEnabled()) {
             // We configure the CMake build only if you decide to opt-in for the New Architecture.
             externalNativeBuild {
@@ -230,6 +231,22 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    flavorDimensions "version"
+
+
+        productFlavors {
+             free  {
+                  dimension "version"
+                  applicationIdSuffix ".free"
+                  //buildConfigField "String",  "MY_FIELD",     '"FREE"'
+                  }
+             premium {
+                   dimension "version"
+                   applicationIdSuffix ".prem"
+                   //buildConfigField "String",  "MY_FIELD",     '"PREMIUM"'
+                   }
+             }
+
 
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
