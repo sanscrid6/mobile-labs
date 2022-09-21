@@ -235,6 +235,13 @@ function ConvertScreen() {
           <Key onPress={() => handlePress('', ACTIONS.REMOVE)} text={'<-'} />
         </>
       </View>
+
+      <View>
+        <Text style={{fontSize: 9, color: 'black', textAlign: 'center'}}>
+          {BuildConfig.FLAVOR} v
+          {`${BuildConfig.MAJOR}.${BuildConfig.MINOR}.${BuildConfig.PATCH}`}
+        </Text>
+      </View>
     </View>
   );
 }
