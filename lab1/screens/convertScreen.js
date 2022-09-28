@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View, TextInput} from 'react-native';
 import Key from '../components/Key';
 import DropDown from '../components/DropDown';
 import Copy from '../components/Copy';
 import {Image} from 'native-base';
 import Config from 'react-native-config';
 import BuildConfig from 'react-native-build-config';
+import Big from 'big.js';
+Big.DP = 100000;
+Big.PE = 100000;
 
 const ACTIONS = {
   ADD: 'ADD',
@@ -13,6 +16,16 @@ const ACTIONS = {
 };
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+
+const clamp = (val, min, max) => {
+  if (val < min) {
+    return min;
+  }
+  if (val > max) {
+    return max;
+  }
+  return val;
+};
 
 const units = [
   {
@@ -45,14 +58,16 @@ const units = [
 ];
 
 const convert = (originalMeasure, convertedMeasure, originalVal) => {
-  const commonUnit = originalMeasure.toCommon * originalVal;
-  return commonUnit / convertedMeasure.toCommon;
+  const commonUnit = originalVal.times(originalMeasure.toCommon);
+  const result = commonUnit.div(convertedMeasure.toCommon);
+  return result;
 };
 
 function ConvertScreen() {
   const [converted, setConverted] = useState(0);
   const [original, setOriginal] = useState([0]);
   const [unit, setUnit] = useState(units[0]);
+  const [caretPos, setCaretPos] = useState(1);
 
   const [originalMeasure, setOriginalMeasure] = useState(
     units[0].measurements[0],
@@ -63,12 +78,7 @@ function ConvertScreen() {
 
   useEffect(() => {
     console.log(BuildConfig, 'env');
-
-    const originalVal = Number(original.join(''));
-
-    if (Number.isNaN(originalVal)) {
-      return;
-    }
+    const originalVal = new Big(original.join(''));
 
     setConverted(convert(originalMeasure, convertedMeasure, originalVal));
   }, [convertedMeasure, original, originalMeasure]);
@@ -77,15 +87,9 @@ function ConvertScreen() {
     setOriginalMeasure(unit.measurements[0]);
     setConvertedMeasure(unit.measurements[1]);
 
-    const originalVal = Number(original.join(''));
+    const originalVal = new Big(original.join(''));
 
-    if (Number.isNaN(originalVal)) {
-      return;
-    }
-
-    setConverted(
-      convert(unit.measurements[0], unit.measurements[1], originalVal),
-    );
+    setConverted(convert(originalMeasure, convertedMeasure, originalVal));
   }, [unit]);
 
   const handlePress = (num, action) => {
@@ -95,6 +99,7 @@ function ConvertScreen() {
           return;
         }
         setOriginal([...original, num]);
+        setCaretPos(clamp(caretPos + 1, 1, original.length + 1));
         break;
 
       case ACTIONS.REMOVE:
@@ -102,7 +107,12 @@ function ConvertScreen() {
           return;
         }
 
-        original.splice(original.length - 1, 1);
+        if (caretPos === 1) {
+          return;
+        }
+
+        original.splice(caretPos - 1, 1);
+        setCaretPos(clamp(caretPos - 1, 1, original.length));
 
         if (original.length === 0) {
           original.push(0);
@@ -112,10 +122,18 @@ function ConvertScreen() {
     }
   };
 
-  const renderOriginal = () => {
+  const renderOriginal = (withCaret = false) => {
+    let renderVal = [];
+    if (withCaret) {
+      renderVal = [...original];
+      renderVal.splice(caretPos, 0, '|');
+    } else {
+      renderVal = original;
+    }
+
     return original[0] === 0 && original[1] !== '.' && original[1] !== undefined
-      ? original.slice(1, original.length).join('')
-      : original.join('');
+      ? renderVal.slice(1, renderVal.length).join('')
+      : renderVal.join('');
   };
 
   const swap = () => {
@@ -124,6 +142,24 @@ function ConvertScreen() {
 
     setOriginalMeasure(newOriginal);
     setConvertedMeasure(newConverted);
+  };
+
+  const setPaste = source => {
+    try {
+      const num = new Big(source);
+      setOriginal(Array.from(num.toString()));
+      setCaretPos(original.length);
+    } catch (e) {
+      console.log(e, source);
+      return;
+    }
+  };
+
+  const moveLeftCaret = () => {
+    setCaretPos(clamp(caretPos - 1, 1, original.length));
+  };
+  const moveRightCaret = () => {
+    setCaretPos(clamp(caretPos + 1, 1, original.length));
   };
 
   return (
@@ -199,8 +235,15 @@ function ConvertScreen() {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <Text>Original: {renderOriginal()}</Text>
-        {BuildConfig.FLAVOR === 'premium' && <Copy source={renderOriginal()} />}
+        <Text
+          style={{
+            maxWidth: '90%',
+          }}>
+          Original: {renderOriginal(true)}
+        </Text>
+        {BuildConfig.FLAVOR === 'premium' && (
+          <Copy source={renderOriginal()} setPaste={setPaste} />
+        )}
       </View>
 
       <View
@@ -209,9 +252,15 @@ function ConvertScreen() {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <Text> Converted: {converted.toFixed(4)}</Text>
+        <Text
+          style={{
+            maxWidth: '90%',
+          }}>
+          {' '}
+          Converted: {converted.toString()}
+        </Text>
         {BuildConfig.FLAVOR === 'premium' && (
-          <Copy source={converted.toFixed(4)} />
+          <Copy source={converted.toString()} />
         )}
       </View>
 
@@ -233,6 +282,18 @@ function ConvertScreen() {
 
           <Key onPress={() => handlePress('.', ACTIONS.ADD)} text={'.'} />
           <Key onPress={() => handlePress('', ACTIONS.REMOVE)} text={'<-'} />
+          <Key
+            onPress={() => {
+              moveLeftCaret();
+            }}
+            text={'arrow left'}
+          />
+          <Key
+            onPress={() => {
+              moveRightCaret();
+            }}
+            text={'arrow right'}
+          />
         </>
       </View>
 
