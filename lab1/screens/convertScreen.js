@@ -147,8 +147,8 @@ function ConvertScreen() {
   const setPaste = source => {
     try {
       const num = new Big(source);
-      setOriginal(Array.from(num.toString()));
-      setCaretPos(original.length);
+      setOriginal([0, ...Array.from(num.toString())]);
+      setCaretPos(Array.from(num.toString()).length + 1);
     } catch (e) {
       console.log(e, source);
       return;
