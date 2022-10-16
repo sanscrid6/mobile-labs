@@ -9,8 +9,13 @@ export const LANGUAGES = {
   RU: 'RU',
 };
 
+export const THEME = {
+  DAY: 'DAY',
+  NIGHT: 'NIGHT',
+};
+
 export const defaultSettings = {
   fontSize: 15,
   language: LANGUAGES.EN,
-  theme: 'day',
+  theme: THEME.DAY,
 };

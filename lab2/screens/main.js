@@ -1,5 +1,6 @@
 import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {SCREENS} from '../constants/constants';
 
 function Main({navigation}) {
   return (
@@ -11,7 +12,7 @@ function Main({navigation}) {
           justifyContent: 'space-between',
         }}>
         <Text>main screen</Text>
-        <TouchableOpacity onPress={e => navigation.navigate('Settings')}>
+        <TouchableOpacity onPress={e => navigation.navigate(SCREENS.SETTINGS)}>
           <Image source={require('../public/cog.png')} />
         </TouchableOpacity>
       </View>

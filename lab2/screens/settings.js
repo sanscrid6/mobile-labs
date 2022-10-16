@@ -1,12 +1,16 @@
 import React from 'react';
-import {Button, Switch, Text, View} from 'react-native';
-import {Slider} from 'native-base';
+import {Button, Text, View} from 'react-native';
+import {Slider, Switch} from 'native-base';
 import styles from '../styles/style';
-import { useStore } from "effector-react";
-import { $settings } from "../state/store";
+import {useStore} from 'effector-react';
+import {$settings} from '../state/store';
+import {updateSettings} from '../state/events';
+import {LANGUAGES, THEME} from '../constants/constants';
 
 function Settings({navigation}) {
   const settings = useStore($settings);
+
+  //const languageProps=
 
   return (
     <>
@@ -18,8 +22,20 @@ function Settings({navigation}) {
         }}>
         <View>
           <Text style={styles.textCenter}>Switch theme</Text>
-          <View style={styles.flexCenter}>
-            <Switch />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            <Text style={styles.textCenter}>Day</Text>
+            <Switch
+              onToggle={state =>
+                updateSettings({theme: state ? THEME.NIGHT : THEME.DAY})
+              }
+              value={settings.theme === THEME.NIGHT}
+            />
+            <Text style={styles.textCenter}>Night</Text>
           </View>
         </View>
         <View>
@@ -28,16 +44,19 @@ function Settings({navigation}) {
             <Slider
               w="3/4"
               maxW="300"
-              defaultValue={70}
-              minValue={0}
-              maxValue={100}
+              defaultValue={settings.fontSize}
+              value={settings.fontSize}
+              minValue={10}
+              maxValue={30}
               accessibilityLabel="hello world"
-              step={10}>
+              step={1}
+              onChange={v => updateSettings({fontSize: v})}>
               <Slider.Track>
                 <Slider.FilledTrack />
               </Slider.Track>
               <Slider.Thumb />
             </Slider>
+            <Text>{settings.fontSize}</Text>
           </View>
         </View>
         <View
@@ -47,7 +66,12 @@ function Settings({navigation}) {
             justifyContent: 'center',
           }}>
           <Text style={styles.textCenter}>En</Text>
-          <Switch />
+          <Switch
+            value={settings.language === LANGUAGES.RU}
+            onToggle={v => {
+              updateSettings({language: v ? LANGUAGES.RU : LANGUAGES.EN});
+            }}
+          />
           <Text style={styles.textCenter}>Ru</Text>
         </View>
 

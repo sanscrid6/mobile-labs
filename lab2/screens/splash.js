@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
 import Saver from '../fs/saver';
-import {defaultSettings} from '../constants/constants';
+import { defaultSettings, SCREENS } from "../constants/constants";
 
 function Splash({navigation}) {
   useEffect(() => {
@@ -11,7 +11,7 @@ function Splash({navigation}) {
         //await Saver.save('settings.json', defaultSettings);
       }
       await new Promise(rs => setTimeout(rs, 2000));
-      navigation.replace('Main');
+      navigation.replace(SCREENS.MAIN);
     };
 
     init();
