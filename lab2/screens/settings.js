@@ -2,8 +2,12 @@ import React from 'react';
 import {Button, Switch, Text, View} from 'react-native';
 import {Slider} from 'native-base';
 import styles from '../styles/style';
+import { useStore } from "effector-react";
+import { $settings } from "../state/store";
 
 function Settings({navigation}) {
+  const settings = useStore($settings);
+
   return (
     <>
       <View

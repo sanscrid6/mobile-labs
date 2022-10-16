@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 
 function Main({navigation}) {
   return (
@@ -11,7 +11,7 @@ function Main({navigation}) {
           justifyContent: 'space-between',
         }}>
         <Text>main screen</Text>
-        <TouchableOpacity onPress={(e) => navigation.navigate("Settings")}>
+        <TouchableOpacity onPress={e => navigation.navigate('Settings')}>
           <Image source={require('../public/cog.png')} />
         </TouchableOpacity>
       </View>

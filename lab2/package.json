@@ -12,9 +12,12 @@
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
+    "effector": "^22.3.0",
+    "effector-react": "^22.3.3",
     "native-base": "^3.4.18",
     "react": "18.1.0",
     "react-native": "0.70.2",
+    "react-native-file-access": "^2.5.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "^3.18.2",
     "react-native-svg": "12.1.1"

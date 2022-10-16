@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
+import Saver from '../fs/saver';
+import {defaultSettings} from '../constants/constants';
 
 function Splash({navigation}) {
-
   useEffect(() => {
     const init = async () => {
+      const isInited = await Saver.exists('settings.json');
+      if (!isInited) {
+        //await Saver.save('settings.json', defaultSettings);
+      }
       await new Promise(rs => setTimeout(rs, 2000));
       navigation.replace('Main');
     };

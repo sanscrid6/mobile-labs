@@ -3399,6 +3399,18 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
+effector-react@^22.3.3:
+  version "22.3.3"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-22.3.3.tgz#833f100bef8e21a898480a7a5a732c86a09b9374"
+  integrity sha512-qoxBerx8gJ/PgoDec4jep2IK4U2+AMyu+VTXE9h4qZ5HsdiyjfLlZuErGTXtFPkE8tvlyg37/nop5lwNBiXhMA==
+  dependencies:
+    use-sync-external-store "^1.0.0"
+
+effector@^22.3.0:
+  version "22.3.0"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-22.3.0.tgz#c743dd7d934ec3f9a2efac76a563cd0281bc4201"
+  integrity sha512-Nh7IXn8U4emq8YtAZf2+y2Rs6n4W/gjPaNZpZLFOXOIAsRZSNBFjtK1vHTWNKxxmNFZOaZN6XUXdT8FDs0mAdQ==
+
 electron-to-chromium@^1.4.251:
   version "1.4.277"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.277.tgz#6dc3d9724a0a19b7ab155bf8e37967357a081dc5"
@@ -6529,6 +6541,11 @@ react-native-codegen@^0.70.5:
     flow-parser "^0.121.0"
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
+
+react-native-file-access@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-file-access/-/react-native-file-access-2.5.0.tgz#df6916e5edacaaed73a1ea20bea79d4be13b3faf"
+  integrity sha512-12Dq2NJ4pcTi+nATwT6ZwotpFn1iHZt/W5fOYNcCOuxIg2JnV4KlyDHEBI2WwwEXn6BvEkg9SZDYFk4rkQFttA==
 
 react-native-gradle-plugin@^0.70.3:
   version "0.70.3"
