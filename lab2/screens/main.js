@@ -1,11 +1,21 @@
 import React from 'react';
-import {Text} from 'react-native';
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
-function Main() {
+function Main({navigation}) {
   return (
-    <>
-      <Text>main screen</Text>
-    </>
+    <View>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <Text>main screen</Text>
+        <TouchableOpacity onPress={(e) => navigation.navigate("Settings")}>
+          <Image source={require('../public/cog.png')} />
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 

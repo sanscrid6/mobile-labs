@@ -7,6 +7,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Main from './screens/main';
 import Splash from './screens/splash';
+import Settings from "./screens/settings";
+import { NativeBaseProvider } from "native-base/src/core/NativeBaseProvider";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,12 +20,15 @@ const App: () => Node = () => {
   };
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Splash" component={Splash} />
-        <Stack.Screen name="Main" component={Main} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <NativeBaseProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Splash" component={Splash} />
+          <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="Settings" component={Settings} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 };
 
