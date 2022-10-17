@@ -11,7 +11,7 @@ export const createStyles = payload => {
     },
 
     viewBg: {
-      color: payload.theme === THEME.DAY ? 'white' : '#000000',
+      backgroundColor: payload.theme === THEME.DAY ? 'white' : '#000000',
     },
 
     textCenter: {

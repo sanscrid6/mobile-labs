@@ -17,74 +17,81 @@ function Settings({navigation}) {
         style={StyleSheet.compose(
           {
             display: 'flex',
-            justifyContent: 'space-around',
-            height: '60%',
+            justifyContent: 'flex-start',
+            height: '100%',
           },
           styles.viewBg,
         )}>
-        <View>
-          <Text style={styles.textCenter}>Switch theme</Text>
+        <View
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            height: '60%',
+          }}>
+          <View>
+            <Text style={styles.textCenter}>Switch theme</Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+              <Text style={styles.textCenter}>Day</Text>
+              <Switch
+                onToggle={state =>
+                  updateSettings({theme: state ? THEME.NIGHT : THEME.DAY})
+                }
+                value={settings.theme === THEME.NIGHT}
+              />
+              <Text style={styles.textCenter}>Night</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.textCenter}>Change font size</Text>
+            <View style={styles.flexCenter}>
+              <Slider
+                w="3/4"
+                maxW="300"
+                defaultValue={settings.fontSize}
+                value={settings.fontSize}
+                minValue={10}
+                maxValue={30}
+                accessibilityLabel="hello world"
+                step={1}
+                onChange={v => updateSettings({fontSize: v})}>
+                <Slider.Track>
+                  <Slider.FilledTrack />
+                </Slider.Track>
+                <Slider.Thumb />
+              </Slider>
+              <Text style={styles.text}>{settings.fontSize}</Text>
+            </View>
+          </View>
           <View
             style={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
-            <Text style={styles.textCenter}>Day</Text>
+            <Text style={styles.textCenter}>En</Text>
             <Switch
-              onToggle={state =>
-                updateSettings({theme: state ? THEME.NIGHT : THEME.DAY})
-              }
-              value={settings.theme === THEME.NIGHT}
+              value={settings.language === LANGUAGES.RU}
+              onToggle={v => {
+                updateSettings({language: v ? LANGUAGES.RU : LANGUAGES.EN});
+              }}
             />
-            <Text style={styles.textCenter}>Night</Text>
+            <Text style={styles.textCenter}>Ru</Text>
           </View>
-        </View>
-        <View>
-          <Text style={styles.textCenter}>Change font size</Text>
-          <View style={styles.flexCenter}>
-            <Slider
-              w="3/4"
-              maxW="300"
-              defaultValue={settings.fontSize}
-              value={settings.fontSize}
-              minValue={10}
-              maxValue={30}
-              accessibilityLabel="hello world"
-              step={1}
-              onChange={v => updateSettings({fontSize: v})}>
-              <Slider.Track>
-                <Slider.FilledTrack />
-              </Slider.Track>
-              <Slider.Thumb />
-            </Slider>
-            <Text style={styles.text}>{settings.fontSize}</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <Text style={styles.textCenter}>En</Text>
-          <Switch
-            value={settings.language === LANGUAGES.RU}
-            onToggle={v => {
-              updateSettings({language: v ? LANGUAGES.RU : LANGUAGES.EN});
-            }}
-          />
-          <Text style={styles.textCenter}>Ru</Text>
-        </View>
 
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-          <Button title="delete all" style={styles.text} />
+          <View
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}>
+            <Button title="delete all" style={styles.text} />
+          </View>
         </View>
       </View>
     </>
