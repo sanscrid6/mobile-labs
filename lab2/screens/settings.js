@@ -1,16 +1,14 @@
 import React from 'react';
 import {Button, Text, View} from 'react-native';
 import {Slider, Switch} from 'native-base';
-import styles from '../styles/style';
 import {useStore} from 'effector-react';
-import {$settings} from '../state/store';
+import { $settings, $styles } from "../state/store";
 import {updateSettings} from '../state/events';
 import {LANGUAGES, THEME} from '../constants/constants';
 
 function Settings({navigation}) {
   const settings = useStore($settings);
-
-  //const languageProps=
+  const styles = useStore($styles);
 
   return (
     <>
@@ -56,7 +54,7 @@ function Settings({navigation}) {
               </Slider.Track>
               <Slider.Thumb />
             </Slider>
-            <Text>{settings.fontSize}</Text>
+            <Text style={styles.text}>{settings.fontSize}</Text>
           </View>
         </View>
         <View
@@ -82,7 +80,7 @@ function Settings({navigation}) {
             alignItems: 'center',
             flexDirection: 'row',
           }}>
-          <Button title="delete all" />
+          <Button title="delete all" style={styles.text}/>
         </View>
       </View>
     </>
