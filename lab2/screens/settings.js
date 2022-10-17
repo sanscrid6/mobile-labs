@@ -2,9 +2,10 @@ import React from 'react';
 import {Button, Text, View} from 'react-native';
 import {Slider, Switch} from 'native-base';
 import {useStore} from 'effector-react';
-import { $settings, $styles } from "../state/store";
+import {$settings, $styles} from '../state/store';
 import {updateSettings} from '../state/events';
 import {LANGUAGES, THEME} from '../constants/constants';
+import {StyleSheet} from 'react-native';
 
 function Settings({navigation}) {
   const settings = useStore($settings);
@@ -13,11 +14,14 @@ function Settings({navigation}) {
   return (
     <>
       <View
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          height: '60%',
-        }}>
+        style={StyleSheet.compose(
+          {
+            display: 'flex',
+            justifyContent: 'space-around',
+            height: '60%',
+          },
+          styles.viewBg,
+        )}>
         <View>
           <Text style={styles.textCenter}>Switch theme</Text>
           <View
@@ -80,7 +84,7 @@ function Settings({navigation}) {
             alignItems: 'center',
             flexDirection: 'row',
           }}>
-          <Button title="delete all" style={styles.text}/>
+          <Button title="delete all" style={styles.text} />
         </View>
       </View>
     </>

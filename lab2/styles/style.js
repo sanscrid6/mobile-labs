@@ -1,9 +1,8 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {defaultSettings} from '../constants/constants';
+import {defaultSettings, THEME} from '../constants/constants';
 
 export const createStyles = payload => {
-  console.log(payload);
   return StyleSheet.create({
     flexCenter: {
       display: 'flex',
@@ -11,7 +10,12 @@ export const createStyles = payload => {
       alignItems: 'center',
     },
 
+    viewBg: {
+      color: payload.theme === THEME.DAY ? 'white' : '#000000',
+    },
+
     textCenter: {
+      color: payload.theme === THEME.DAY ? '#000000' : 'white',
       fontSize: payload.fontSize,
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -19,6 +23,7 @@ export const createStyles = payload => {
 
     text: {
       fontSize: payload.fontSize,
+      color: payload.theme === THEME.DAY ? '#000000' : 'white',
     },
   });
 };

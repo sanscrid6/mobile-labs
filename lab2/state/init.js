@@ -10,9 +10,11 @@ function init() {
 
   $styles.on(setStyles, (state, data) => data);
 
-  $settings.updates.watch(({fontSize}) => {
-    setStyles(createStyles({fontSize}));
+  $settings.updates.watch(({fontSize, theme}) => {
+    setStyles(createStyles({fontSize, theme}));
   });
+
+  $settings.updates.watch(s => console.log(s));
 }
 
 export default init;
