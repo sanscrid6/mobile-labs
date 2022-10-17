@@ -4,7 +4,7 @@ import {Slider, Switch} from 'native-base';
 import {useStore} from 'effector-react';
 import {$settings, $styles} from '../state/store';
 import {updateSettings} from '../state/events';
-import {LANGUAGES, THEME} from '../constants/constants';
+import {LANGUAGES, localization, THEME} from '../constants/constants';
 import {StyleSheet} from 'react-native';
 
 function Settings({navigation}) {
@@ -29,25 +29,33 @@ function Settings({navigation}) {
             height: '60%',
           }}>
           <View>
-            <Text style={styles.textCenter}>Switch theme</Text>
+            <Text style={styles.textCenter}>
+              {localization.changeTheme[settings.language]}
+            </Text>
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
-              <Text style={styles.textCenter}>Day</Text>
+              <Text style={styles.textCenter}>
+                {localization.day[settings.language]}
+              </Text>
               <Switch
                 onToggle={state =>
                   updateSettings({theme: state ? THEME.NIGHT : THEME.DAY})
                 }
                 value={settings.theme === THEME.NIGHT}
               />
-              <Text style={styles.textCenter}>Night</Text>
+              <Text style={styles.textCenter}>
+                {localization.night[settings.language]}
+              </Text>
             </View>
           </View>
           <View>
-            <Text style={styles.textCenter}>Change font size</Text>
+            <Text style={styles.textCenter}>
+              {localization.changeFontSize[settings.language]}
+            </Text>
             <View style={styles.flexCenter}>
               <Slider
                 w="3/4"
@@ -90,7 +98,10 @@ function Settings({navigation}) {
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            <Button title="delete all" style={styles.text} />
+            <Button
+              title={localization.deleteAllData[settings.language]}
+              style={styles.text}
+            />
           </View>
         </View>
       </View>
