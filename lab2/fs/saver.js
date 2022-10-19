@@ -1,4 +1,3 @@
-import {Dirs, FileSystem} from 'react-native-file-access';
 import RNFS from 'react-native-fs';
 
 export default new (class Saver {
@@ -10,16 +9,17 @@ export default new (class Saver {
     );
   }
 
-  async append(path, data) {
-    await FileSystem.appendFile(path, JSON.stringify(data));
-  }
+  // async append(path, data) {
+  //   await FileSystem.appendFile(path, JSON.stringify(data));
+  // }
 
   async delete(path) {
     return RNFS.unlink(RNFS.DocumentDirectoryPath + path);
   }
 
   async read(path) {
-    return RNFS.readFile(RNFS.DocumentDirectoryPath + path, 'utf8');
+    const data = await RNFS.readFile(RNFS.DocumentDirectoryPath + path, 'utf8');
+    return JSON.parse(data);
   }
 
   async exists(path) {

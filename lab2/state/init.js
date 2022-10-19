@@ -1,5 +1,5 @@
-import {$settings, $styles} from './store';
-import {setStyles, updateSettings} from './events';
+import {$settings, $styles, $timers} from './store';
+import {setStyles, updateSettings, setTimers, setSettings} from './events';
 import {createStyles} from '../styles/style';
 
 function init() {
@@ -14,7 +14,8 @@ function init() {
     setStyles(createStyles({fontSize, theme}));
   });
 
-  $settings.updates.watch(s => console.log(s));
+  $timers.on(setTimers, (state, data) => data);
+  $settings.on(setSettings, (state, data) => data);
 }
 
 export default init;

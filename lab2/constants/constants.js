@@ -41,6 +41,9 @@ export const localization = {
     [LANGUAGES.EN]: 'Delete all data',
     [LANGUAGES.RU]: 'Удалить все данные',
   },
+  saveSettings: {
+    [LANGUAGES.EN]: 'Save settings',
+    [LANGUAGES.RU]: 'Сохранить настрйки',
+  },
 };
-
 

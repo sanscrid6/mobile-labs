@@ -12,6 +12,7 @@ export const createStyles = payload => {
 
     viewBg: {
       backgroundColor: payload.theme === THEME.DAY ? 'white' : '#000000',
+      height: '100%',
     },
 
     textCenter: {
@@ -19,6 +20,11 @@ export const createStyles = payload => {
       fontSize: payload.fontSize,
       textAlign: 'center',
       textAlignVertical: 'center',
+    },
+
+    icon: {
+      //color: ,
+      //filter: invert(100%)
     },
 
     text: {
