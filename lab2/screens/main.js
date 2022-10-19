@@ -7,6 +7,11 @@ import {useStore} from 'effector-react';
 function Main({navigation}) {
   const styles = useStore($styles);
 
+  const createNewTimer = () => {
+
+    navigation.navigate(SCREENS.EDIT);
+  }
+
   return (
     <View style={styles.viewBg}>
       <View
@@ -17,13 +22,16 @@ function Main({navigation}) {
           width: '100%',
         }}>
         <TouchableOpacity onPress={e => navigation.navigate(SCREENS.SETTINGS)}>
-          <Text>создать</Text>
-          {/*<Image source={require('../public/cog.png')} style={styles.icon}/>*/}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={e => navigation.navigate(SCREENS.SETTINGS)}>
-          <Image source={require('../public/cog.png')} style={styles.icon}/>
+          <Image source={require('../public/cog.png')} style={styles.icon} />
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+        onPress={createNewTimer}
+        style={{position: 'absolute', right: '5%', bottom: '5%'}}>
+        <Text>создать</Text>
+        {/*<Image source={require('../public/cog.png')} style={styles.icon}/>*/}
+      </TouchableOpacity>
     </View>
   );
 }

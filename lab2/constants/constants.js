@@ -2,6 +2,7 @@ export const SCREENS = {
   SPLASH: 'SPLASH',
   SETTINGS: 'SETTINGS',
   MAIN: 'MAIN',
+  EDIT: 'EDIT',
 };
 
 export const LANGUAGES = {

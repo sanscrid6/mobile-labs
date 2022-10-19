@@ -91,7 +91,6 @@ function Settings({navigation}) {
             />
             <Text style={styles.textCenter}>Ru</Text>
           </View>
-
           <View
             style={{
               display: 'flex',
@@ -103,6 +102,14 @@ function Settings({navigation}) {
               title={localization.deleteAllData[settings.language]}
               style={styles.text}
             />
+          </View>
+          <View
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}>
             <Button
               title={localization.saveSettings[settings.language]}
               style={styles.text}

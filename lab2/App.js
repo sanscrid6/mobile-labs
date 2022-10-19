@@ -11,6 +11,7 @@ import Settings from './screens/settings';
 import {NativeBaseProvider} from 'native-base/src/core/NativeBaseProvider';
 import {SCREENS} from './constants/constants';
 import init from './state/init';
+import Edit from './screens/edit';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ const App: () => Node = () => {
           <Stack.Screen name={SCREENS.SPLASH} component={Splash} />
           <Stack.Screen name={SCREENS.MAIN} component={Main} />
           <Stack.Screen name={SCREENS.SETTINGS} component={Settings} />
+          <Stack.Screen name={SCREENS.EDIT} component={Edit} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
