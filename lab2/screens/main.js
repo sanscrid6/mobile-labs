@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {defaultTimer, SCREENS} from '../constants/constants';
 import {$styles, $timers} from '../state/store';
 import {useStore} from 'effector-react';
@@ -34,20 +34,22 @@ function Main({navigation}) {
           <Image source={require('../public/cog.png')} style={styles.icon} />
         </TouchableOpacity>
       </View>
-      <View
+      <ScrollView
         style={{
           paddingHorizontal: 40,
         }}>
-        {timers.map(({color, title, id}, index) => (
-          <Timer
-            key={index}
-            color={color}
-            title={title}
-            id={id}
-            onClick={() => editTimer(id)}
-          />
-        ))}
-      </View>
+        {timers
+          .sort((a, b) => a.id - b.id)
+          .map(({color, title, id}, index) => (
+            <Timer
+              key={index}
+              color={color}
+              title={title}
+              id={id}
+              onClick={() => editTimer(id)}
+            />
+          ))}
+      </ScrollView>
 
       <TouchableOpacity
         onPress={createNewTimer}

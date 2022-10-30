@@ -31,7 +31,6 @@ function init() {
   $editingTimer.on(updateEditingTimer, (state, data) => {
     return {...state, ...data};
   });
-  $editingTimer.updates.watch(t => console.log(t));
 }
 
 export default init;

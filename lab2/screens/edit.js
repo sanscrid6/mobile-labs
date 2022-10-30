@@ -6,7 +6,6 @@ import {Input} from 'native-base';
 import {setTimers, updateEditingTimer} from '../state/events';
 import DropDown from '../components/DropDown';
 import Button from '../components/Button';
-import Saver from '../fs/saver';
 import {localization} from '../constants/constants';
 
 function Edit({navigation}) {
@@ -21,8 +20,17 @@ function Edit({navigation}) {
     {label: 'yellow', value: 'yellow'},
   ];
 
-  const save = async () => {
-    setTimers([...timers, editingTimer]);
+  const save = () => {
+    const hasTimer = timers.find(t => t.id === editingTimer.id);
+    if (hasTimer) {
+      setTimers([
+        ...timers.filter(t => t.id !== editingTimer.id),
+        editingTimer,
+      ]);
+    } else {
+      setTimers([...timers, editingTimer]);
+    }
+
     navigation.goBack();
   };
 
@@ -76,7 +84,7 @@ function Edit({navigation}) {
         />
         <Button
           label={localization.save[settings.language]}
-          onClick={async () => await save()}
+          onClick={save}
         />
       </View>
     </View>
