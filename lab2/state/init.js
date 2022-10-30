@@ -26,6 +26,7 @@ function init() {
   $timers.updates.watch(
     async timers => await Saver.save('timers.json', timers),
   );
+  $timers.updates.watch(t => console.log(t));
 
   $editingTimer.on(setEditingTimer, (state, data) => data);
   $editingTimer.on(updateEditingTimer, (state, data) => {

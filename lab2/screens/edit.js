@@ -3,7 +3,7 @@ import {$editingTimer, $settings, $styles, $timers} from '../state/store';
 import {useStore} from 'effector-react';
 import {View, StyleSheet} from 'react-native';
 import {Input} from 'native-base';
-import {setTimers, updateEditingTimer} from '../state/events';
+import { setEditingTimer, setTimers, updateEditingTimer } from "../state/events";
 import DropDown from '../components/DropDown';
 import Button from '../components/Button';
 import {localization} from '../constants/constants';
@@ -30,6 +30,7 @@ function Edit({navigation}) {
     } else {
       setTimers([...timers, editingTimer]);
     }
+    // setTimers([]);
 
     navigation.goBack();
   };

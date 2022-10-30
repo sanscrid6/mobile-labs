@@ -9,6 +9,10 @@ function Timer({title, color, onClick, id}) {
   const timers = useStore($timers);
 
   const deleteTimer = () => {
+    console.log(
+      id,
+      timers.filter(t => t.id !== id),
+    );
     setTimers(timers.filter(t => t.id !== id));
   };
 

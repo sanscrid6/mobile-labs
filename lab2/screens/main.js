@@ -5,13 +5,18 @@ import {$styles, $timers} from '../state/store';
 import {useStore} from 'effector-react';
 import Timer from '../components/Timer';
 import {setEditingTimer} from '../state/events';
+import {Guid} from 'js-guid';
 
 function Main({navigation}) {
   const styles = useStore($styles);
   const timers = useStore($timers);
 
   const createNewTimer = () => {
-    setEditingTimer({...defaultTimer, id: timers.length});
+    setEditingTimer({
+      ...defaultTimer,
+      id: Guid.newGuid().toString(),
+      timestamp: Date.now(),
+    });
     navigation.navigate(SCREENS.EDIT);
   };
 
@@ -39,10 +44,10 @@ function Main({navigation}) {
           paddingHorizontal: 40,
         }}>
         {timers
-          .sort((a, b) => a.id - b.id)
-          .map(({color, title, id}, index) => (
+          .sort((a, b) => a.timestamp - b.timestamp)
+          .map(({color, title, id}) => (
             <Timer
-              key={index}
+              key={id}
               color={color}
               title={title}
               id={id}
