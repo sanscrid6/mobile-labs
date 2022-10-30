@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {Slider, Switch} from 'native-base';
 import {useStore} from 'effector-react';
 import {$settings, $styles} from '../state/store';
@@ -7,6 +7,7 @@ import {updateSettings} from '../state/events';
 import {LANGUAGES, localization, THEME} from '../constants/constants';
 import {StyleSheet} from 'react-native';
 import Saver from '../fs/saver';
+import Button from "../components/Button";
 
 function Settings({navigation}) {
   const settings = useStore($settings);
@@ -99,8 +100,8 @@ function Settings({navigation}) {
               flexDirection: 'row',
             }}>
             <Button
-              title={localization.deleteAllData[settings.language]}
-              style={styles.text}
+              label={localization.deleteAllData[settings.language]}
+              onClick={styles.text}
             />
           </View>
           <View
@@ -111,9 +112,8 @@ function Settings({navigation}) {
               flexDirection: 'row',
             }}>
             <Button
-              title={localization.saveSettings[settings.language]}
-              style={styles.text}
-              onPress={async () => await Saver.save('settings.json', settings)}
+              label={localization.saveSettings[settings.language]}
+              onClick={async () => await Saver.save('settings.json', settings)}
             />
           </View>
         </View>

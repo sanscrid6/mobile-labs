@@ -4,10 +4,20 @@ import {useStore} from 'effector-react';
 import {View, StyleSheet} from 'react-native';
 import {Input} from 'native-base';
 import {updateEditingTimer} from '../state/events';
+import DropDown from '../components/DropDown';
+import Button from "../components/Button";
 
 function Edit({}) {
   const styles = useStore($styles);
   const editingTimer = useStore($editingTimer);
+
+  const colors = [
+    {label: 'white', value: 'white'},
+    {label: 'red', value: 'red'},
+    {label: 'yellow', value: 'yellow'},
+  ];
+
+  const save = () => {}
 
   return (
     <View
@@ -15,6 +25,7 @@ function Edit({}) {
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'row',
+        backgroundColor: editingTimer.color,
       })}>
       <View
         style={{
@@ -40,10 +51,21 @@ function Edit({}) {
           keyboardType="numeric"
           placeholder="work duration sec"
         />
-        <Input variant="outline" keyboardType="numeric" />
+        <Input
+          variant="outline"
+          keyboardType="numeric"
+          placeholder="intervals"
+        />
+        <DropDown
+          items={colors}
+          placeholder="choose color"
+          onValueChanged={value => updateEditingTimer({color: value})}
+          selected={editingTimer.color}
+        />
+        <Button label={'save'} onClick={save}/>
       </View>
 
-      {/*<Button></Button>*/}
+
     </View>
   );
 }

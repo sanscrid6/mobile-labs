@@ -31,6 +31,13 @@ export const createStyles = payload => {
       fontSize: payload.fontSize,
       color: payload.theme === THEME.DAY ? '#000000' : 'white',
     },
+
+    buttonText: {
+      fontSize: payload.fontSize,
+      color: 'white',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+    },
   });
 };
 

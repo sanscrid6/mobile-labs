@@ -10,5 +10,5 @@ export const $editingTimer = globalDomain.store({
   rest: 12,
   work: 12,
   title: '',
-  color: '',
+  color: 'white',
 });
