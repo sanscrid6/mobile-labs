@@ -21,6 +21,14 @@ export const defaultSettings = {
   theme: THEME.DAY,
 };
 
+export const defaultTimer = {
+  intervals: 0,
+  restDuration: 12,
+  workDuration: 12,
+  title: '',
+  color: 'white',
+};
+
 export const localization = {
   changeFontSize: {
     [LANGUAGES.EN]: 'Change font size',
@@ -46,5 +54,24 @@ export const localization = {
     [LANGUAGES.EN]: 'Save settings',
     [LANGUAGES.RU]: 'Сохранить настрйки',
   },
+  save: {
+    [LANGUAGES.EN]: 'Save',
+    [LANGUAGES.RU]: 'Сохранить',
+  },
+  intervals: {
+    [LANGUAGES.EN]: 'Intervals',
+    [LANGUAGES.RU]: 'Интервалы',
+  },
+  restDuration: {
+    [LANGUAGES.EN]: 'Rest duration',
+    [LANGUAGES.RU]: 'Длительность отдыхa',
+  },
+  workDuration: {
+    [LANGUAGES.EN]: 'Work duration',
+    [LANGUAGES.RU]: 'Длительность подхода',
+  },
+  title: {
+    [LANGUAGES.EN]: 'Title',
+    [LANGUAGES.RU]: 'Название',
+  },
 };
-

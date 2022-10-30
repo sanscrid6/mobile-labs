@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
 import Saver from '../fs/saver';
 import {defaultSettings, SCREENS} from '../constants/constants';
-import { setSettings } from "../state/events";
+import {setSettings, setTimers} from '../state/events';
 
 function Splash({navigation}) {
   useEffect(() => {
@@ -13,9 +13,27 @@ function Splash({navigation}) {
       //   await Saver.save('settings.json', defaultSettings);
       // }
       await new Promise(rs => setTimeout(rs, 500));
-      const savedSettings = await Saver.read('settings.json');
-      console.log(savedSettings);
-      setSettings(savedSettings);
+      const hasSettings = await Saver.exists('settings.json');
+      const hasTimers = await Saver.exists('timer.json');
+
+      let settings = defaultSettings;
+      let timers = [];
+
+      if (!hasSettings) {
+        await Saver.save('settings.json', defaultSettings);
+      } else {
+        settings = await Saver.read('settings.json');
+      }
+
+      if (hasTimers) {
+        await Saver.save('timers.json', []);
+      } else {
+        timers = await Saver.read('timers.json');
+      }
+
+      console.log(settings);
+      setTimers(timers);
+      setSettings(settings);
       navigation.replace(SCREENS.MAIN);
     };
 

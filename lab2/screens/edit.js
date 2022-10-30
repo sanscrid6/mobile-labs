@@ -1,15 +1,19 @@
 import React from 'react';
-import {$editingTimer, $styles} from '../state/store';
+import {$editingTimer, $settings, $styles, $timers} from '../state/store';
 import {useStore} from 'effector-react';
 import {View, StyleSheet} from 'react-native';
 import {Input} from 'native-base';
-import {updateEditingTimer} from '../state/events';
+import {setTimers, updateEditingTimer} from '../state/events';
 import DropDown from '../components/DropDown';
-import Button from "../components/Button";
+import Button from '../components/Button';
+import Saver from '../fs/saver';
+import {localization} from '../constants/constants';
 
-function Edit({}) {
+function Edit({navigation}) {
   const styles = useStore($styles);
   const editingTimer = useStore($editingTimer);
+  const timers = useStore($timers);
+  const settings = useStore($settings);
 
   const colors = [
     {label: 'white', value: 'white'},
@@ -17,7 +21,10 @@ function Edit({}) {
     {label: 'yellow', value: 'yellow'},
   ];
 
-  const save = () => {}
+  const save = async () => {
+    setTimers([...timers, editingTimer]);
+    navigation.goBack();
+  };
 
   return (
     <View
@@ -36,25 +43,29 @@ function Edit({}) {
         }}>
         <Input
           variant="outline"
-          keyboardType="numeric"
           value={editingTimer.title}
-          onChange={e => updateEditingTimer({title: e.target.value})}
-          placeholder="title"
+          onChangeText={e => updateEditingTimer({title: e})}
+          placeholder={localization.title[settings.language]}
         />
         <Input
           variant="outline"
           keyboardType="numeric"
-          placeholder="rest duration sec"
+          value={editingTimer.workDuration}
+          onChangeText={e => updateEditingTimer({workDuration: e})}
+          placeholder={localization.workDuration[settings.language]}
         />
         <Input
           variant="outline"
           keyboardType="numeric"
-          placeholder="work duration sec"
+          value={editingTimer.restDuration}
+          onChangeText={e => updateEditingTimer({restDuration: e})}
+          placeholder={localization.restDuration[settings.language]}
         />
         <Input
           variant="outline"
           keyboardType="numeric"
-          placeholder="intervals"
+          onChangeText={e => updateEditingTimer({intervals: e})}
+          placeholder={localization.intervals[settings.language]}
         />
         <DropDown
           items={colors}
@@ -62,10 +73,11 @@ function Edit({}) {
           onValueChanged={value => updateEditingTimer({color: value})}
           selected={editingTimer.color}
         />
-        <Button label={'save'} onClick={save}/>
+        <Button
+          label={localization.save[settings.language]}
+          onClick={async () => await save()}
+        />
       </View>
-
-
     </View>
   );
 }
