@@ -11,7 +11,13 @@ function Main({navigation}) {
   const timers = useStore($timers);
 
   const createNewTimer = () => {
-    setEditingTimer({defaultTimer, id: timers.length});
+    setEditingTimer({...defaultTimer, id: timers.length});
+    navigation.navigate(SCREENS.EDIT);
+  };
+
+  const editTimer = id => {
+    const timer = timers.find(t => t.id === id);
+    setEditingTimer(timer);
     navigation.navigate(SCREENS.EDIT);
   };
 
@@ -32,8 +38,14 @@ function Main({navigation}) {
         style={{
           paddingHorizontal: 40,
         }}>
-        {timers.map(({color, title}, index) => (
-          <Timer key={index} color={color} title={title} />
+        {timers.map(({color, title, id}, index) => (
+          <Timer
+            key={index}
+            color={color}
+            title={title}
+            id={id}
+            onClick={() => editTimer(id)}
+          />
         ))}
       </View>
 

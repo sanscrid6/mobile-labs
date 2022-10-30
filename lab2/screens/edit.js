@@ -64,6 +64,7 @@ function Edit({navigation}) {
         <Input
           variant="outline"
           keyboardType="numeric"
+          value={editingTimer.intervals}
           onChangeText={e => updateEditingTimer({intervals: e})}
           placeholder={localization.intervals[settings.language]}
         />
