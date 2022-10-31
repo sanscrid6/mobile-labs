@@ -1,4 +1,10 @@
-import {$editingTimer, $settings, $styles, $timers} from './store';
+import {
+  $activeTimer,
+  $editingTimer,
+  $settings,
+  $styles,
+  $timers,
+} from './store';
 import {
   setStyles,
   updateSettings,
@@ -6,6 +12,7 @@ import {
   setSettings,
   setEditingTimer,
   updateEditingTimer,
+  setActiveTimer,
 } from './events';
 import {createStyles} from '../styles/style';
 import Saver from '../fs/saver';
@@ -32,6 +39,8 @@ function init() {
   $editingTimer.on(updateEditingTimer, (state, data) => {
     return {...state, ...data};
   });
+
+  $activeTimer.on(setActiveTimer, (state, data) => data);
 }
 
 export default init;

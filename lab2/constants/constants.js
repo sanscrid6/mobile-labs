@@ -3,6 +3,7 @@ export const SCREENS = {
   SETTINGS: 'SETTINGS',
   MAIN: 'MAIN',
   EDIT: 'EDIT',
+  PLAY: 'PLAY',
 };
 
 export const LANGUAGES = {
@@ -74,4 +75,16 @@ export const localization = {
     [LANGUAGES.EN]: 'Title',
     [LANGUAGES.RU]: 'Название',
   },
+  edit: {
+    [LANGUAGES.EN]: 'Edit',
+    [LANGUAGES.RU]: 'Редактировать',
+  },
+  delete: {
+    [LANGUAGES.EN]: 'Delete',
+    [LANGUAGES.RU]: 'Удалить',
+  },
+  create: {
+    [LANGUAGES.EN]: 'Create',
+    [LANGUAGES.RU]: 'Создать',
+  }
 };

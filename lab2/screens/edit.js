@@ -3,7 +3,7 @@ import {$editingTimer, $settings, $styles, $timers} from '../state/store';
 import {useStore} from 'effector-react';
 import {View, StyleSheet} from 'react-native';
 import {Input} from 'native-base';
-import { setEditingTimer, setTimers, updateEditingTimer } from "../state/events";
+import {setTimers, updateEditingTimer} from '../state/events';
 import DropDown from '../components/DropDown';
 import Button from '../components/Button';
 import {localization} from '../constants/constants';
@@ -83,10 +83,7 @@ function Edit({navigation}) {
           onValueChanged={value => updateEditingTimer({color: value})}
           selected={editingTimer.color}
         />
-        <Button
-          label={localization.save[settings.language]}
-          onClick={save}
-        />
+        <Button label={localization.save[settings.language]} onClick={save} />
       </View>
     </View>
   );

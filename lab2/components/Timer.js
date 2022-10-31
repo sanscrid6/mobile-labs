@@ -1,19 +1,25 @@
 import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useStore} from 'effector-react';
-import {$styles, $timers} from '../state/store';
-import {setTimers} from '../state/events';
+import {$settings, $styles, $timers} from '../state/store';
+import {setEditingTimer, setTimers} from '../state/events';
+import Icon from 'react-native-vector-icons/AntDesign';
+import {localization, SCREENS, THEME} from '../constants/constants';
 
-function Timer({title, color, onClick, id}) {
+function Timer({title, color, onClick, id, navigation}) {
   const styles = useStore($styles);
   const timers = useStore($timers);
+  const settings = useStore($settings);
+  const theme = useStore($settings.map(s => s.theme));
 
   const deleteTimer = () => {
-    console.log(
-      id,
-      timers.filter(t => t.id !== id),
-    );
     setTimers(timers.filter(t => t.id !== id));
+  };
+
+  const editTimer = () => {
+    const timer = timers.find(t => t.id === id);
+    setEditingTimer(timer);
+    navigation.navigate(SCREENS.EDIT);
   };
 
   return (
@@ -26,10 +32,10 @@ function Timer({title, color, onClick, id}) {
           borderStyle: 'solid',
           borderWidth: 1,
           borderColor: '#B7BAA3',
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
         }}>
-        <TouchableOpacity onPress={deleteTimer}>
-          <Text>delete</Text>
-        </TouchableOpacity>
         <Text
           style={StyleSheet.compose(styles.text, {
             marginTop: 10,
@@ -37,6 +43,18 @@ function Timer({title, color, onClick, id}) {
           })}>
           {title}
         </Text>
+        <View>
+          <TouchableOpacity style={{margin: 5}} onPress={deleteTimer}>
+            <Text style={styles.text}>
+              {localization.delete[settings.language]}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{margin: 5}} onPress={editTimer}>
+            <Text style={styles.text}>
+              {localization.edit[settings.language]}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </TouchableOpacity>
   );

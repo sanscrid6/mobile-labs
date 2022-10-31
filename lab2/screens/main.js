@@ -1,15 +1,16 @@
 import React from 'react';
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import {defaultTimer, SCREENS} from '../constants/constants';
-import {$styles, $timers} from '../state/store';
+import {defaultTimer, localization, SCREENS} from '../constants/constants';
+import {$settings, $styles, $timers} from '../state/store';
 import {useStore} from 'effector-react';
 import Timer from '../components/Timer';
-import {setEditingTimer} from '../state/events';
+import {setActiveTimer, setEditingTimer} from '../state/events';
 import {Guid} from 'js-guid';
 
 function Main({navigation}) {
   const styles = useStore($styles);
   const timers = useStore($timers);
+  const settings = useStore($settings);
 
   const createNewTimer = () => {
     setEditingTimer({
@@ -20,10 +21,9 @@ function Main({navigation}) {
     navigation.navigate(SCREENS.EDIT);
   };
 
-  const editTimer = id => {
-    const timer = timers.find(t => t.id === id);
-    setEditingTimer(timer);
-    navigation.navigate(SCREENS.EDIT);
+  const playTimer = id => {
+    setActiveTimer(timers.find(t => t.id === id));
+    navigation.navigate(SCREENS.PLAY);
   };
 
   return (
@@ -51,7 +51,8 @@ function Main({navigation}) {
               color={color}
               title={title}
               id={id}
-              onClick={() => editTimer(id)}
+              onClick={() => playTimer(id)}
+              navigation={navigation}
             />
           ))}
       </ScrollView>
@@ -59,7 +60,9 @@ function Main({navigation}) {
       <TouchableOpacity
         onPress={createNewTimer}
         style={{position: 'absolute', right: '5%', bottom: '5%'}}>
-        <Text>создать</Text>
+        <Text style={styles.text}>
+          {localization.create[settings.language]}
+        </Text>
         {/*<Image source={require('../public/cog.png')} style={styles.icon}/>*/}
       </TouchableOpacity>
     </View>
