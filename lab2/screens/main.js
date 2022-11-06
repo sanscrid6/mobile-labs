@@ -22,7 +22,7 @@ function Main({navigation}) {
   };
 
   const playTimer = id => {
-    setActiveTimer(timers.find(t => t.id === id));
+    setActiveTimer({...timers.find(t => t.id === id)});
     navigation.navigate(SCREENS.PLAY);
   };
 

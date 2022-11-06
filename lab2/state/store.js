@@ -7,3 +7,8 @@ export const $styles = globalDomain.store(createStyles(defaultSettings));
 export const $timers = globalDomain.store([]);
 export const $editingTimer = globalDomain.store(defaultTimer);
 export const $activeTimer = globalDomain.store(null);
+
+export const $playState = globalDomain.store({
+  state: '',
+  elapsed: 0,
+})

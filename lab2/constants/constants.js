@@ -30,6 +30,8 @@ export const defaultTimer = {
   color: 'white',
 };
 
+export const TICK_TIME = 500;
+
 export const localization = {
   changeFontSize: {
     [LANGUAGES.EN]: 'Change font size',
@@ -86,5 +88,17 @@ export const localization = {
   create: {
     [LANGUAGES.EN]: 'Create',
     [LANGUAGES.RU]: 'Создать',
-  }
+  },
+  play: {
+    [LANGUAGES.EN]: 'Play',
+    [LANGUAGES.RU]: 'Старт',
+  },
+  stop: {
+    [LANGUAGES.EN]: 'Stop',
+    [LANGUAGES.RU]: 'Стоп',
+  },
+  pause: {
+    [LANGUAGES.EN]: 'Pause',
+    [LANGUAGES.RU]: 'Пауза',
+  },
 };
