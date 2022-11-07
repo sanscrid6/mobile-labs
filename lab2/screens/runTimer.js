@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import {updatePlayState} from '../state/events';
 import {getIntervalTime, nextInterval, tickFx} from '../state/effects';
 import {INTERVAL_STATE, localization, TICK_TIME} from '../constants/constants';
+import BackgroundTimer from 'react-native-background-timer';
 
 const STATES = {
   PLAY: 'PLAY',
@@ -58,7 +59,7 @@ function RunTimer({navigation}) {
 
   const play = () => {
     if (playState.state !== STATES.PAUSED) {
-      clearInterval(playState.interval);
+      BackgroundTimer.clearInterval(playState.interval);
       updatePlayState({
         state: '',
         elapsed: 0,
@@ -87,7 +88,7 @@ function RunTimer({navigation}) {
         allTime: remaining,
       });
     }
-    const interval = setInterval(tickFx, TICK_TIME);
+    const interval = BackgroundTimer.setInterval(tickFx, TICK_TIME);
     updatePlayState({state: STATES.PLAY, interval});
   };
 
@@ -96,12 +97,12 @@ function RunTimer({navigation}) {
       return;
     }
 
-    clearInterval(playState.interval);
+    BackgroundTimer.clearInterval(playState.interval);
     updatePlayState({state: STATES.PAUSED, interval: undefined});
   };
 
   const stop = () => {
-    clearInterval(playState.interval);
+    BackgroundTimer.clearInterval(playState.interval);
     updatePlayState({
       state: '',
       elapsed: 0,

@@ -3,6 +3,7 @@ import {$activeTimer, $playState} from './store';
 import {updatePlayState} from './events';
 import {INTERVAL_STATE, TICK_TIME} from '../constants/constants';
 import Sound from 'react-native-sound';
+import BackgroundTimer from 'react-native-background-timer';
 
 export const nextInterval = (interval, activeTimer) => {
   switch (interval) {
@@ -53,6 +54,7 @@ export const tickFx = globalDomain.effect(() => {
   if (intervalInfo.signalTime <= 0) {
     intervalEnds.setVolume(1);
     intervalEnds.play();
+    intervalInfo.signalTime = 100000000000;
   }
 
   if (intervalInfo.time <= 0) {
@@ -61,7 +63,7 @@ export const tickFx = globalDomain.effect(() => {
   }
 
   if (currentInterval / 2 === activeTimer.intervals) {
-    clearInterval(currState.interval);
+    BackgroundTimer.clearInterval(currState.interval);
     updatePlayState({
       state: '',
       elapsed: 0,
