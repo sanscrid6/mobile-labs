@@ -15,6 +15,7 @@ const STATES = {
 
 function TextField({label, value}) {
   const styles = useStore($styles);
+
   return (
     <View
       style={{
@@ -71,13 +72,13 @@ function RunTimer({navigation}) {
 
       const remaining =
         (+activeTimer.workDuration + +activeTimer.restDuration) *
-          +activeTimer.intervals *
-          1000;
+        +activeTimer.intervals *
+        1000;
 
       const intervalInfo = {
         name: INTERVAL_STATE.WORK,
-        time: activeTimer.workDuration * 1000,
-        signalTime: (activeTimer.workDuration - 1) * 1000,
+        time: activeTimer.workDuration * 1000 - 1,
+        signalTime: (activeTimer.workDuration - 0.7) * 1000,
       };
 
       updatePlayState({
@@ -166,32 +167,38 @@ function RunTimer({navigation}) {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <TextField label={'title'} value={activeTimer.title} />
         <TextField
-          label={'elapsed'}
+          label={localization.title[settings.language]}
+          value={activeTimer.title}
+        />
+        <TextField
+          label={localization.elapsed[settings.language]}
           value={secondsToTime(playState.elapsed / 1000)}
         />
         <TextField
-          label={'remaining'}
+          label={localization.remaining[settings.language]}
           value={secondsToTime(playState.remaining / 1000)}
         />
         {playState.intervalInfo && playState.intervalInfo.time && (
           <TextField
-            label={'time remains before interval end'}
+            label={localization.remainIntervalTime[settings.language]}
             value={secondsToTime(playState.intervalInfo.time / 1000)}
           />
         )}
         {playState.intervalInfo && playState.intervalInfo.name && (
           <TextField
-            label={'interval name'}
+            label={localization.interval[settings.language]}
             value={playState.intervalInfo.name}
           />
         )}
         {playState.state && (
-          <TextField label={'timer state'} value={playState.state} />
+          <TextField
+            label={localization.timerState[settings.language]}
+            value={playState.state}
+          />
         )}
         <TextField
-          label={'progress'}
+          label={localization.progress[settings.language]}
           value={` ${
             playState.state ? Math.floor(playState.currentInterval / 2 + 1) : 0
           }/${activeTimer.intervals}`}

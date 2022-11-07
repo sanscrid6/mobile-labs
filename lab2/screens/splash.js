@@ -7,14 +7,10 @@ import {setSettings, setTimers} from '../state/events';
 function Splash({navigation}) {
   useEffect(() => {
     const init = async () => {
-      // const isInited = await Saver.exists('settings.json');
-      // if (!isInited) {
-      //   const data = await Saver.read('settings.json');
-      //   await Saver.save('settings.json', defaultSettings);
-      // }
       await new Promise(rs => setTimeout(rs, 500));
       const hasSettings = await Saver.exists('settings.json');
-      const hasTimers = await Saver.exists('timer.json');
+      const hasTimers = await Saver.exists('timers.json');
+      console.log(hasSettings, hasTimers);
 
       let settings = defaultSettings;
       let timers = [];
@@ -22,10 +18,12 @@ function Splash({navigation}) {
       if (!hasSettings) {
         await Saver.save('settings.json', defaultSettings);
       } else {
-        settings = await Saver.read('settings.json');
+        const q = await Saver.read('settings.json');
+        console.log(q, 'settings');
+        settings = q;
       }
 
-      if (hasTimers) {
+      if (!hasTimers) {
         await Saver.save('timers.json', []);
       } else {
         timers = await Saver.read('timers.json');

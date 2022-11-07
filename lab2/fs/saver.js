@@ -23,6 +23,6 @@ export default new (class Saver {
   }
 
   async exists(path) {
-    await RNFS.exists(path);
+    return RNFS.exists(RNFS.DocumentDirectoryPath + path);
   }
 })();

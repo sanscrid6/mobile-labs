@@ -24,7 +24,7 @@ function Timer({title, color, onClick, id, navigation}) {
     <TouchableOpacity onPress={onClick}>
       <View
         style={{
-          backgroundColor: color,
+          backgroundColor: settings.theme === THEME.DAY ? color : 'black',
           height: 100,
           marginBottom: 20,
           borderStyle: 'solid',

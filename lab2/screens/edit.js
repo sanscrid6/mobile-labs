@@ -6,7 +6,7 @@ import {Input} from 'native-base';
 import {setTimers, updateEditingTimer} from '../state/events';
 import DropDown from '../components/DropDown';
 import Button from '../components/Button';
-import {localization} from '../constants/constants';
+import { localization, THEME } from "../constants/constants";
 
 function Edit({navigation}) {
   const styles = useStore($styles);
@@ -41,7 +41,6 @@ function Edit({navigation}) {
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'row',
-        backgroundColor: editingTimer.color,
       })}>
       <View
         style={{
@@ -55,6 +54,10 @@ function Edit({navigation}) {
           value={editingTimer.title}
           onChangeText={e => updateEditingTimer({title: e})}
           placeholder={localization.title[settings.language]}
+          style={styles.text}
+          placeholderTextColor={
+            settings.theme === THEME.DAY ? 'black' : 'white'
+          }
         />
         <Input
           variant="outline"
@@ -62,6 +65,10 @@ function Edit({navigation}) {
           value={editingTimer.workDuration}
           onChangeText={e => updateEditingTimer({workDuration: e})}
           placeholder={localization.workDuration[settings.language]}
+          style={styles.text}
+          placeholderTextColor={
+            settings.theme === THEME.DAY ? 'black' : 'white'
+          }
         />
         <Input
           variant="outline"
@@ -69,6 +76,10 @@ function Edit({navigation}) {
           value={editingTimer.restDuration}
           onChangeText={e => updateEditingTimer({restDuration: e})}
           placeholder={localization.restDuration[settings.language]}
+          style={styles.text}
+          placeholderTextColor={
+            settings.theme === THEME.DAY ? 'black' : 'white'
+          }
         />
         <Input
           variant="outline"
@@ -76,6 +87,10 @@ function Edit({navigation}) {
           value={editingTimer.intervals}
           onChangeText={e => updateEditingTimer({intervals: e})}
           placeholder={localization.intervals[settings.language]}
+          style={styles.text}
+          placeholderTextColor={
+            settings.theme === THEME.DAY ? 'black' : 'white'
+          }
         />
         <DropDown
           items={colors}

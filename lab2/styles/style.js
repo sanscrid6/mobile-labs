@@ -27,6 +27,10 @@ export const createStyles = payload => {
       //filter: invert(100%)
     },
 
+    input: {
+
+    },
+
     text: {
       fontSize: payload.fontSize,
       color: payload.theme === THEME.DAY ? '#000000' : 'white',

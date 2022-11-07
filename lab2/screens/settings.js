@@ -3,11 +3,11 @@ import {Text, View} from 'react-native';
 import {Slider, Switch} from 'native-base';
 import {useStore} from 'effector-react';
 import {$settings, $styles} from '../state/store';
-import {updateSettings} from '../state/events';
+import { setTimers, updateSettings } from "../state/events";
 import {LANGUAGES, localization, THEME} from '../constants/constants';
 import {StyleSheet} from 'react-native';
 import Saver from '../fs/saver';
-import Button from "../components/Button";
+import Button from '../components/Button';
 
 function Settings({navigation}) {
   const settings = useStore($settings);
@@ -101,7 +101,10 @@ function Settings({navigation}) {
             }}>
             <Button
               label={localization.deleteAllData[settings.language]}
-              onClick={styles.text}
+              onClick={async () => {
+                await Saver.save('timers.json', []);
+                setTimers([]);
+              }}
             />
           </View>
           <View

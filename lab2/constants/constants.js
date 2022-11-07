@@ -106,4 +106,28 @@ export const localization = {
     [LANGUAGES.EN]: 'Pause',
     [LANGUAGES.RU]: 'Пауза',
   },
+  elapsed: {
+    [LANGUAGES.EN]: 'Elapsed',
+    [LANGUAGES.RU]: 'Затрачено',
+  },
+  remaining: {
+    [LANGUAGES.EN]: 'Remaining',
+    [LANGUAGES.RU]: 'Отсавшееся',
+  },
+  interval: {
+    [LANGUAGES.EN]: 'Interval',
+    [LANGUAGES.RU]: 'Интервал',
+  },
+  timerState: {
+    [LANGUAGES.EN]: 'Timer state',
+    [LANGUAGES.RU]: 'Состояние таймера',
+  },
+  remainIntervalTime: {
+    [LANGUAGES.EN]: 'Time remains before interval end',
+    [LANGUAGES.RU]: 'Оставшееся время до конца интервала',
+  },
+  progress: {
+    [LANGUAGES.EN]: 'Progress',
+    [LANGUAGES.RU]: 'Прогресс',
+  },
 };
