@@ -27,7 +27,11 @@ function TextField({label, value}) {
         {label}:
       </Text>
       <Text
-        style={StyleSheet.compose(styles.text, {minWidth: 100, maxWidth: 120, marginLeft: 25})}>
+        style={StyleSheet.compose(styles.text, {
+          minWidth: 100,
+          maxWidth: 120,
+          marginLeft: 25,
+        })}>
         {value}
       </Text>
     </View>
@@ -67,11 +71,12 @@ function RunTimer({navigation}) {
       const remaining =
         (+activeTimer.workDuration + +activeTimer.restDuration) *
           +activeTimer.intervals *
-          1000 +
-        TICK_TIME;
+          1000;
+
       const intervalInfo = {
         name: INTERVAL_STATE.WORK,
-        time: activeTimer.workDuration * 1000 + TICK_TIME,
+        time: activeTimer.workDuration * 1000,
+        signalTime: (activeTimer.workDuration - 1) * 1000,
       };
 
       updatePlayState({
@@ -87,6 +92,10 @@ function RunTimer({navigation}) {
   };
 
   const pause = () => {
+    if (!playState.state) {
+      return;
+    }
+
     clearInterval(playState.interval);
     updatePlayState({state: STATES.PAUSED, interval: undefined});
   };
@@ -104,7 +113,10 @@ function RunTimer({navigation}) {
   };
 
   const nextIntervalHandler = () => {
-    if (playState.currentInterval / 2 === activeTimer.intervals) {
+    if (
+      playState.currentInterval / 2 === activeTimer.intervals ||
+      !playState.state
+    ) {
       return;
     }
 
@@ -116,7 +128,7 @@ function RunTimer({navigation}) {
   };
 
   const prevIntervalHandler = () => {
-    if (playState.currentInterval === 0) {
+    if (playState.currentInterval === 0 || !playState.state) {
       return;
     }
 
@@ -179,7 +191,9 @@ function RunTimer({navigation}) {
         )}
         <TextField
           label={'progress'}
-          value={` ${playState.state ? Math.floor(playState.currentInterval / 2 + 1): 0}/${activeTimer.intervals}`}
+          value={` ${
+            playState.state ? Math.floor(playState.currentInterval / 2 + 1) : 0
+          }/${activeTimer.intervals}`}
         />
 
         <View

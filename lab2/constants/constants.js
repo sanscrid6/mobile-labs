@@ -30,7 +30,7 @@ export const defaultTimer = {
   color: 'white',
 };
 
-export const TICK_TIME = 500;
+export const TICK_TIME = 100;
 
 export const INTERVAL_STATE = {
   WORK: 'WORK',

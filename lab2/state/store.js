@@ -11,4 +11,5 @@ export const $activeTimer = globalDomain.store(null);
 export const $playState = globalDomain.store({
   state: '',
   elapsed: 0,
+  remaining: 0,
 })
