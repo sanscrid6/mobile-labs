@@ -19,7 +19,7 @@ function Button({label, onClick}) {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'stretch',
+            //alignItems: 'stretch',
             justifyContent: 'center',
             padding: 9,
           }}>

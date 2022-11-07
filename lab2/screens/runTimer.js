@@ -12,6 +12,28 @@ const STATES = {
   PAUSED: 'PAUSED',
 };
 
+function TextField({label, value}) {
+  const styles = useStore($styles);
+  return (
+    <View
+      style={{
+        height: 70,
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+      }}>
+      <Text
+        style={StyleSheet.compose(styles.text, {minWidth: 100, maxWidth: 120})}>
+        {label}:
+      </Text>
+      <Text
+        style={StyleSheet.compose(styles.text, {minWidth: 100, maxWidth: 120, marginLeft: 25})}>
+        {value}
+      </Text>
+    </View>
+  );
+}
+
 function RunTimer({navigation}) {
   const activeTimer = useStore($activeTimer);
   const styles = useStore($styles);
@@ -20,10 +42,13 @@ function RunTimer({navigation}) {
 
   const localStyles = StyleSheet.create({
     btn: {
-      // flexBasis: '33%',
+      flexBasis: '33%',
     },
     field: {
       height: 50,
+    },
+    btnContainer: {
+      marginHorizontal: 6,
     },
   });
 
@@ -128,31 +153,34 @@ function RunTimer({navigation}) {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-          {activeTimer.title}
-        </Text>
-        <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-          {secondsToTime(playState.elapsed / 1000)}
-        </Text>
-        <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-          {secondsToTime(playState.remaining / 1000)}
-        </Text>
-        {playState.intervalInfo && (
-          <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-            {secondsToTime(playState.intervalInfo.time / 1000)}
-          </Text>
+        <TextField label={'title'} value={activeTimer.title} />
+        <TextField
+          label={'elapsed'}
+          value={secondsToTime(playState.elapsed / 1000)}
+        />
+        <TextField
+          label={'remaining'}
+          value={secondsToTime(playState.remaining / 1000)}
+        />
+        {playState.intervalInfo && playState.intervalInfo.time && (
+          <TextField
+            label={'time remains before interval end'}
+            value={secondsToTime(playState.intervalInfo.time / 1000)}
+          />
         )}
-        {playState.intervalInfo && (
-          <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-            {playState.intervalInfo.name}
-          </Text>
+        {playState.intervalInfo && playState.intervalInfo.name && (
+          <TextField
+            label={'interval name'}
+            value={playState.intervalInfo.name}
+          />
         )}
-        <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-          {playState.state}
-        </Text>
-        <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-          {Math.floor(playState.currentInterval / 2 + 1)}
-        </Text>
+        {playState.state && (
+          <TextField label={'timer state'} value={playState.state} />
+        )}
+        <TextField
+          label={'progress'}
+          value={` ${playState.state ? Math.floor(playState.currentInterval / 2 + 1): 0}/${activeTimer.intervals}`}
+        />
 
         <View
           style={StyleSheet.compose(
@@ -160,34 +188,43 @@ function RunTimer({navigation}) {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-around',
+              alignItems: 'space-around',
             },
             localStyles.field,
           )}>
-          <Button
-            style={localStyles.btn}
-            onClick={play}
-            label={localization.play[settings.language]}
-          />
-          <Button
-            style={localStyles.btn}
-            onClick={pause}
-            label={localization.pause[settings.language]}
-          />
-          <Button
-            style={localStyles.btn}
-            onClick={stop}
-            label={localization.stop[settings.language]}
-          />
-          <Button
-            style={localStyles.btn}
-            onClick={nextIntervalHandler}
-            label="=>"
-          />
-          <Button
-            style={localStyles.btn}
-            onClick={prevIntervalHandler}
-            label="<="
-          />
+          <View style={localStyles.btnContainer}>
+            <Button
+              onClick={play}
+              label={localization.play[settings.language]}
+            />
+          </View>
+          <View style={localStyles.btnContainer}>
+            <Button
+              onClick={pause}
+              label={localization.pause[settings.language]}
+            />
+          </View>
+          <View style={localStyles.btnContainer}>
+            <Button
+              style={localStyles.btn}
+              onClick={stop}
+              label={localization.stop[settings.language]}
+            />
+          </View>
+          <View style={localStyles.btnContainer}>
+            <Button
+              style={localStyles.btn}
+              onClick={nextIntervalHandler}
+              label="=>"
+            />
+          </View>
+          <View style={localStyles.btnContainer}>
+            <Button
+              style={localStyles.btn}
+              onClick={prevIntervalHandler}
+              label="<="
+            />
+          </View>
         </View>
       </View>
     </View>
