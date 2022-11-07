@@ -4,7 +4,7 @@ import {useStore} from 'effector-react';
 import {$activeTimer, $playState, $settings, $styles} from '../state/store';
 import Button from '../components/Button';
 import {updatePlayState} from '../state/events';
-import {tickFx} from '../state/effects';
+import {getIntervalTime, nextInterval, tickFx} from '../state/effects';
 import {INTERVAL_STATE, localization, TICK_TIME} from '../constants/constants';
 
 const STATES = {
@@ -29,21 +29,25 @@ function RunTimer({navigation}) {
 
   const play = () => {
     if (playState.state !== STATES.PAUSED) {
+      clearInterval(playState.interval);
+      updatePlayState({
+        state: '',
+        elapsed: 0,
+        currentInterval: 0,
+        interval: undefined,
+        remaining: 0,
+        intervalInfo: {},
+      });
+
       const remaining =
         (+activeTimer.workDuration + +activeTimer.restDuration) *
           +activeTimer.intervals *
-          1000 -
+          1000 +
         TICK_TIME;
       const intervalInfo = {
         name: INTERVAL_STATE.WORK,
-        time: activeTimer.workDuration * 1000,
+        time: activeTimer.workDuration * 1000 + TICK_TIME,
       };
-      console.log(
-        remaining,
-        'remaining',
-        activeTimer,
-        activeTimer.workDuration + activeTimer.restDuration,
-      );
 
       updatePlayState({
         elapsed: 0,
@@ -74,13 +78,46 @@ function RunTimer({navigation}) {
     });
   };
 
+  const nextIntervalHandler = () => {
+    if (playState.currentInterval / 2 === activeTimer.intervals) {
+      return;
+    }
+
+    const elapsed = playState.elapsed + playState.intervalInfo.time;
+    const intervalInfo = nextInterval(playState.intervalInfo.name, activeTimer);
+    const currentInterval = playState.currentInterval + 1;
+
+    updatePlayState({elapsed, intervalInfo, currentInterval});
+  };
+
+  const prevIntervalHandler = () => {
+    if (playState.currentInterval === 0) {
+      return;
+    }
+
+    const intervalInfo = nextInterval(playState.intervalInfo.name, activeTimer);
+    const elapsed =
+      playState.elapsed -
+      (getIntervalTime(playState.intervalInfo.name, activeTimer) -
+        playState.intervalInfo.time) -
+      getIntervalTime(intervalInfo.name, activeTimer);
+    const currentInterval = playState.currentInterval - 1;
+
+    updatePlayState({elapsed, intervalInfo, currentInterval});
+  };
+
   const secondsToTime = s => {
     const hours = Math.trunc(s / 3600);
     s -= hours * 3600;
     const minutes = Math.trunc(s / 60);
     s -= minutes * 60;
     const seconds = Math.trunc(s);
-    return `${hours}:${minutes}:${seconds}`;
+
+    const toDoubleSymbols = num => (num > 9 ? num : `0${num}`);
+
+    return `${toDoubleSymbols(hours)}:${toDoubleSymbols(
+      minutes,
+    )}:${toDoubleSymbols(seconds)}`;
   };
 
   return (
@@ -100,18 +137,23 @@ function RunTimer({navigation}) {
         <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
           {secondsToTime(playState.remaining / 1000)}
         </Text>
+        {playState.intervalInfo && (
+          <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
+            {secondsToTime(playState.intervalInfo.time / 1000)}
+          </Text>
+        )}
+        {playState.intervalInfo && (
+          <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
+            {playState.intervalInfo.name}
+          </Text>
+        )}
         <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
           {playState.state}
         </Text>
         <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-          {playState.currentInterval / 2 + 1}
+          {Math.floor(playState.currentInterval / 2 + 1)}
         </Text>
-        <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-          {playState.intervalInfo.name}
-        </Text>
-        <Text style={StyleSheet.compose(styles.text, localStyles.field)}>
-          {secondsToTime(playState.intervalInfo.time / 1000)}
-        </Text>
+
         <View
           style={StyleSheet.compose(
             {
@@ -135,6 +177,16 @@ function RunTimer({navigation}) {
             style={localStyles.btn}
             onClick={stop}
             label={localization.stop[settings.language]}
+          />
+          <Button
+            style={localStyles.btn}
+            onClick={nextIntervalHandler}
+            label="=>"
+          />
+          <Button
+            style={localStyles.btn}
+            onClick={prevIntervalHandler}
+            label="<="
           />
         </View>
       </View>
