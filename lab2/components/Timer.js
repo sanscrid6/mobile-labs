@@ -3,14 +3,12 @@ import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useStore} from 'effector-react';
 import {$settings, $styles, $timers} from '../state/store';
 import {setEditingTimer, setTimers} from '../state/events';
-import Icon from 'react-native-vector-icons/AntDesign';
 import {localization, SCREENS, THEME} from '../constants/constants';
 
 function Timer({title, color, onClick, id, navigation}) {
   const styles = useStore($styles);
   const timers = useStore($timers);
   const settings = useStore($settings);
-  const theme = useStore($settings.map(s => s.theme));
 
   const deleteTimer = () => {
     setTimers(timers.filter(t => t.id !== id));

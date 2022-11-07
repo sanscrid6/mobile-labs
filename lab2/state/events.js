@@ -8,6 +8,3 @@ export const setEditingTimer = globalDomain.event();
 export const updateEditingTimer = globalDomain.event();
 export const setActiveTimer = globalDomain.event();
 export const updatePlayState = globalDomain.event();
-
-export class updateActiveTimer {
-}

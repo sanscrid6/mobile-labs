@@ -32,6 +32,11 @@ export const defaultTimer = {
 
 export const TICK_TIME = 500;
 
+export const INTERVAL_STATE = {
+  WORK: 'WORK',
+  REST: 'REST',
+};
+
 export const localization = {
   changeFontSize: {
     [LANGUAGES.EN]: 'Change font size',

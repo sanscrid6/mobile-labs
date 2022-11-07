@@ -14,13 +14,10 @@ import {
   setEditingTimer,
   updateEditingTimer,
   setActiveTimer,
-  updateActiveTimer,
   updatePlayState,
 } from './events';
 import {createStyles} from '../styles/style';
 import Saver from '../fs/saver';
-import {forward} from 'effector';
-import {tickFx} from './effects';
 
 function init() {
   $settings.on(updateSettings, (state, data) => {
@@ -50,8 +47,6 @@ function init() {
   $playState.on(updatePlayState, (state, data) => {
     return {...state, ...data};
   });
-
-  // forward({from: tickFx, to: tickFx});
 }
 
 export default init;
