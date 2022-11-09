@@ -3,7 +3,7 @@ import {$activeTimer, $playState} from './store';
 import {updatePlayState} from './events';
 import {INTERVAL_STATE, TICK_TIME} from '../constants/constants';
 import Sound from 'react-native-sound';
-import BackgroundTimer from 'react-native-background-timer';
+import {stopTimer} from '../screens/runTimer';
 
 export const nextInterval = (interval, activeTimer) => {
   switch (interval) {
@@ -41,15 +41,17 @@ const intervalEnds = new Sound('may.wav', Sound.MAIN_BUNDLE, error => {
 export const tickFx = globalDomain.effect(() => {
   const currState = $playState.getState();
   const activeTimer = $activeTimer.getState();
+  const lastTick = new Date().getTime();
+  const delta = lastTick - currState.lastTick;
 
-  const elapsed = currState.elapsed + TICK_TIME;
+  const elapsed = currState.elapsed + delta;
   const remaining = currState.allTime - elapsed;
 
   let intervalInfo = currState.intervalInfo;
   let currentInterval = currState.currentInterval;
 
-  intervalInfo.time -= TICK_TIME;
-  intervalInfo.signalTime -= TICK_TIME;
+  intervalInfo.time -= delta;
+  intervalInfo.signalTime -= delta;
 
   if (intervalInfo.signalTime <= 0) {
     intervalEnds.setVolume(1);
@@ -63,17 +65,15 @@ export const tickFx = globalDomain.effect(() => {
   }
 
   if (currentInterval / 2 === activeTimer.intervals) {
-    BackgroundTimer.clearInterval(currState.interval);
-    updatePlayState({
-      state: '',
-      elapsed: 0,
-      currentInterval: 0,
-      interval: undefined,
-      remaining: 0,
-      intervalInfo: {},
-    });
+    stopTimer(currState);
     return;
   }
 
-  updatePlayState({elapsed, currentInterval, remaining, intervalInfo});
+  updatePlayState({
+    elapsed,
+    currentInterval,
+    remaining,
+    intervalInfo,
+    lastTick,
+  });
 });

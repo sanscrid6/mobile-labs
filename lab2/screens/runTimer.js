@@ -13,6 +13,18 @@ const STATES = {
   PAUSED: 'PAUSED',
 };
 
+export const stopTimer = playState => {
+  BackgroundTimer.clearInterval(playState.interval);
+  updatePlayState({
+    state: '',
+    elapsed: 0,
+    currentInterval: 0,
+    interval: undefined,
+    remaining: 0,
+    intervalInfo: {},
+  });
+}
+
 function TextField({label, value}) {
   const styles = useStore($styles);
 
@@ -60,15 +72,7 @@ function RunTimer({navigation}) {
 
   const play = () => {
     if (playState.state !== STATES.PAUSED) {
-      BackgroundTimer.clearInterval(playState.interval);
-      updatePlayState({
-        state: '',
-        elapsed: 0,
-        currentInterval: 0,
-        interval: undefined,
-        remaining: 0,
-        intervalInfo: {},
-      });
+     stopTimer(playState);
 
       const remaining =
         (+activeTimer.workDuration + +activeTimer.restDuration) *
@@ -90,7 +94,11 @@ function RunTimer({navigation}) {
       });
     }
     const interval = BackgroundTimer.setInterval(tickFx, TICK_TIME);
-    updatePlayState({state: STATES.PLAY, interval});
+    updatePlayState({
+      state: STATES.PLAY,
+      interval,
+      lastTick: new Date().getTime(),
+    });
   };
 
   const pause = () => {
@@ -103,20 +111,12 @@ function RunTimer({navigation}) {
   };
 
   const stop = () => {
-    BackgroundTimer.clearInterval(playState.interval);
-    updatePlayState({
-      state: '',
-      elapsed: 0,
-      currentInterval: 0,
-      interval: undefined,
-      remaining: 0,
-      intervalInfo: {},
-    });
+    stopTimer(playState);
   };
 
   const nextIntervalHandler = () => {
     if (
-      playState.currentInterval / 2 === activeTimer.intervals ||
+      (playState.currentInterval + 1) / 2 === activeTimer.intervals ||
       !playState.state
     ) {
       return;
@@ -124,9 +124,10 @@ function RunTimer({navigation}) {
 
     const elapsed = playState.elapsed + playState.intervalInfo.time;
     const intervalInfo = nextInterval(playState.intervalInfo.name, activeTimer);
+    const remaining = playState.allTime - elapsed;
     const currentInterval = playState.currentInterval + 1;
 
-    updatePlayState({elapsed, intervalInfo, currentInterval});
+    updatePlayState({elapsed, intervalInfo, currentInterval, remaining});
   };
 
   const prevIntervalHandler = () => {
@@ -140,9 +141,10 @@ function RunTimer({navigation}) {
       (getIntervalTime(playState.intervalInfo.name, activeTimer) -
         playState.intervalInfo.time) -
       getIntervalTime(intervalInfo.name, activeTimer);
+    const remaining = playState.allTime - elapsed;
     const currentInterval = playState.currentInterval - 1;
 
-    updatePlayState({elapsed, intervalInfo, currentInterval});
+    updatePlayState({elapsed, intervalInfo, currentInterval, remaining});
   };
 
   const secondsToTime = s => {
