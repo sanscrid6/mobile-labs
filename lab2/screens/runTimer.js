@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, AppState} from 'react-native';
 import {useStore} from 'effector-react';
 import {$activeTimer, $playState, $settings, $styles} from '../state/store';
 import Button from '../components/Button';
@@ -7,14 +7,21 @@ import {updatePlayState} from '../state/events';
 import {getIntervalTime, nextInterval, tickFx} from '../state/effects';
 import {INTERVAL_STATE, localization, TICK_TIME} from '../constants/constants';
 import BackgroundTimer from 'react-native-background-timer';
+import PushNotification, {Importance} from 'react-native-push-notification';
+import {Guid} from 'js-guid';
 
 const STATES = {
   PLAY: 'PLAY',
   PAUSED: 'PAUSED',
 };
+//
 
 export const stopTimer = playState => {
   BackgroundTimer.clearInterval(playState.interval);
+  // playState?.notifications?.forEach(notification =>
+  //   Notifications.cancelLocalNotification(notification),
+  // );
+
   updatePlayState({
     state: '',
     elapsed: 0,
@@ -22,8 +29,9 @@ export const stopTimer = playState => {
     interval: undefined,
     remaining: 0,
     intervalInfo: {},
+    notifications: [],
   });
-}
+};
 
 function TextField({label, value}) {
   const styles = useStore($styles);
@@ -52,6 +60,8 @@ function TextField({label, value}) {
   );
 }
 
+let channelId;
+
 function RunTimer({navigation}) {
   const activeTimer = useStore($activeTimer);
   const styles = useStore($styles);
@@ -70,9 +80,22 @@ function RunTimer({navigation}) {
     },
   });
 
+  useEffect(() => {
+    channelId = 'my channel';
+    PushNotification.createChannel(
+      {
+        channelId,
+        channelName: 'parashaChannel',
+        importance: Importance.HIGH,
+      },
+      err => console.log(err, 'channel'),
+    );
+  }, []);
+
   const play = () => {
     if (playState.state !== STATES.PAUSED) {
-     stopTimer(playState);
+      PushNotification.cancelAllLocalNotifications();
+      stopTimer(playState);
 
       const remaining =
         (+activeTimer.workDuration + +activeTimer.restDuration) *
@@ -92,8 +115,17 @@ function RunTimer({navigation}) {
         intervalInfo,
         allTime: remaining,
       });
+
+      calculateNotifications(0);
+    } else {
+      calculateNotifications(
+        playState.currentInterval,
+        playState.intervalInfo.time,
+      );
     }
+
     const interval = BackgroundTimer.setInterval(tickFx, TICK_TIME);
+
     updatePlayState({
       state: STATES.PLAY,
       interval,
@@ -101,16 +133,40 @@ function RunTimer({navigation}) {
     });
   };
 
+  const calculateNotifications = (interval, remainingTime = 0) => {
+    console.log(Math.ceil(interval / 2));
+    let prevTime = remainingTime;
+    for (let i = interval; i < +activeTimer.intervals * 2; i++) {
+      if (!(remainingTime !== 0 && i === interval)) {
+        prevTime +=
+          (i % 2 === 0
+            ? +activeTimer.workDuration
+            : +activeTimer.restDuration) * 1000;
+      }
+
+      PushNotification.localNotificationSchedule({
+        channelId,
+        message: (i % 2 === 0 ? 'work' : 'rest') + ' ended',
+        date: new Date(Date.now() + prevTime),
+        allowWhileIdle: false,
+        priority: 'high',
+        repeatTime: 1,
+      });
+    }
+  };
+
   const pause = () => {
     if (!playState.state) {
       return;
     }
+    PushNotification.cancelAllLocalNotifications();
 
     BackgroundTimer.clearInterval(playState.interval);
     updatePlayState({state: STATES.PAUSED, interval: undefined});
   };
 
   const stop = () => {
+    PushNotification.cancelAllLocalNotifications();
     stopTimer(playState);
   };
 
@@ -126,6 +182,11 @@ function RunTimer({navigation}) {
     const intervalInfo = nextInterval(playState.intervalInfo.name, activeTimer);
     const remaining = playState.allTime - elapsed;
     const currentInterval = playState.currentInterval + 1;
+
+    if(playState.state === STATES.PLAY){
+      PushNotification.cancelAllLocalNotifications();
+      calculateNotifications(currentInterval);
+    }
 
     updatePlayState({elapsed, intervalInfo, currentInterval, remaining});
   };
@@ -143,6 +204,11 @@ function RunTimer({navigation}) {
       getIntervalTime(intervalInfo.name, activeTimer);
     const remaining = playState.allTime - elapsed;
     const currentInterval = playState.currentInterval - 1;
+
+    if(playState.state === STATES.PLAY){
+      PushNotification.cancelAllLocalNotifications();
+      calculateNotifications(currentInterval);
+    }
 
     updatePlayState({elapsed, intervalInfo, currentInterval, remaining});
   };
@@ -218,16 +284,20 @@ function RunTimer({navigation}) {
           )}>
           <View style={localStyles.btnContainer}>
             <Button
-              onClick={play}
-              label={localization.play[settings.language]}
+              onClick={playState.state === STATES.PLAY ? pause : play}
+              label={
+                playState.state === STATES.PLAY
+                  ? localization.pause[settings.language]
+                  : localization.play[settings.language]
+              }
             />
           </View>
-          <View style={localStyles.btnContainer}>
-            <Button
-              onClick={pause}
-              label={localization.pause[settings.language]}
-            />
-          </View>
+          {/*<View style={localStyles.btnContainer}>*/}
+          {/*  <Button*/}
+          {/*    onClick={pause}*/}
+          {/*    label={localization.pause[settings.language]}*/}
+          {/*  />*/}
+          {/*</View>*/}
           <View style={localStyles.btnContainer}>
             <Button
               style={localStyles.btn}

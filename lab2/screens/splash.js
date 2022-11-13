@@ -3,6 +3,8 @@ import {Text, View} from 'react-native';
 import Saver from '../fs/saver';
 import {defaultSettings, SCREENS} from '../constants/constants';
 import {setSettings, setTimers} from '../state/events';
+import PushNotification from 'react-native-push-notification';
+
 
 function Splash({navigation}) {
   useEffect(() => {
@@ -33,6 +35,7 @@ function Splash({navigation}) {
       setTimers(timers);
       setSettings(settings);
       navigation.replace(SCREENS.MAIN);
+
     };
 
     init();
