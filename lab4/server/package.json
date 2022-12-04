@@ -1,0 +1,18 @@
+{
+  "name": "aboba",
+  "version": "1.0.0",
+  "description": "zxcsss",
+  "main": "app.js",
+  "type": "module",
+  "repository": "none",
+  "author": "sanscrid6",
+  "license": "none",
+  "private": null,
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^2.3.3"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}

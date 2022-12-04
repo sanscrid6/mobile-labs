@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import Chessboard from 'react-native-chessboard';
 import {View} from 'react-native';
+import { BACKEND_URL } from "../constants/constant";
 
 function ChessBoard({}) {
   const ref = useRef();
@@ -14,8 +15,16 @@ function ChessBoard({}) {
       // await ref.current?.move({from: 'f1', to: 'c4'});
       // await ref.current?.move({from: 'a6', to: 'a5'});
       // await ref.current?.move({ from: 'f3', to: 'f7' });
+      await fetch(BACKEND_URL).then(res => res.json()).then(res => console.log(res));
     })();
   }, []);
+
+  // setInterval( () => {
+  //   if(ref.current){
+  //     console.log(ref.current.getState());
+  //   }
+  // }, 5000);
+
   return (
     <View
       style={{
@@ -23,7 +32,9 @@ function ChessBoard({}) {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <Chessboard ref={ref} gestureEnabled={true} />
+      <Chessboard ref={ref} gestureEnabled={true} onMove={(state) => {
+        console.log(state, 'move');
+      }}/>
     </View>
   );
 }
